@@ -1,79 +1,159 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const captureBtn = document.getElementById('capture-btn');
-    const switchBtn = document.getElementById('switch-camera-btn');
-    const fileInput = document.getElementById('file-input');
+﻿document.addEventListener("DOMContentLoaded", () => {
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const captureBtn = document.getElementById("capture-btn");
+    const switchBtn = document.getElementById("switch-camera-btn");
+    const fileInput = document.getElementById("file-input");
 
     let stream = null;
-    let facingMode = "environment"; // "environment" es la cámara trasera
+    let facingMode = "environment";
+    let iniciando = false;
 
-    // Función para iniciar la cámara
+    if (!video || !canvas || !captureBtn || !switchBtn || !fileInput) {
+        console.error("No se encontraron todos los elementos de la cámara.");
+        return;
+    }
+
+    video.setAttribute("autoplay", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("muted", "");
+    video.muted = true;
+
     async function startCamera() {
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop()); // Apagar cámara anterior
+        if (iniciando) return;
+
+        if (!navigator.mediaDevices?.getUserMedia) {
+            alert("Tu navegador no permite acceder a la cámara. Comprueba que utilizas HTTPS y Chrome.");
+            return;
         }
 
-        const constraints = {
-            video: { facingMode: facingMode }
-        };
+        if (!window.isSecureContext) {
+            alert("La cámara necesita una conexión segura HTTPS.");
+            return;
+        }
+
+        iniciando = true;
+        captureBtn.disabled = true;
 
         try {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+
+            const constraints = {
+                audio: false,
+                video: {
+                    facingMode: { ideal: facingMode },
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                }
+            };
+
             stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+            const metadataPromise = new Promise((resolve, reject) => {
+                video.addEventListener("loadedmetadata", resolve, { once: true });
+                video.addEventListener("error", reject, { once: true });
+            });
+
             video.srcObject = stream;
+
+            if (video.readyState < 1) {
+                await metadataPromise;
+            }
+
+            await video.play();
+
+            console.log("Cámara iniciada correctamente.");
+            console.log("Resolución:", video.videoWidth, "x", video.videoHeight);
+
         } catch (err) {
-            console.error("Error al acceder a la cámara: ", err);
-            alert("No se pudo acceder a la cámara. Asegúrate de dar permisos.");
+            console.error("Error al iniciar cámara:", err);
+
+            const errores = {
+                NotAllowedError: "El navegador no permite utilizar la cámara. Revisa los permisos.",
+                PermissionDeniedError: "El acceso a la cámara fue rechazado.",
+                NotFoundError: "No se encontró una cámara disponible.",
+                NotReadableError: "La cámara está siendo utilizada por otra aplicación.",
+                OverconstrainedError: "La cámara no admite la configuración solicitada.",
+                AbortError: "La cámara dejó de funcionar. Intenta nuevamente."
+            };
+
+            alert(errores[err.name] || "No se pudo iniciar la cámara: " + err.message);
+
+        } finally {
+            iniciando = false;
+            captureBtn.disabled = false;
         }
     }
 
-    // Iniciar cámara al cargar
     startCamera();
 
-    // Cambiar cámara (frontal/trasera)
-    switchBtn.addEventListener('click', () => {
+    switchBtn.addEventListener("click", async () => {
         facingMode = facingMode === "environment" ? "user" : "environment";
-        startCamera();
+        await startCamera();
     });
 
-    // Tomar foto
-    captureBtn.addEventListener('click', () => {
-        // Ajustar el canvas al tamaño del video
+    captureBtn.addEventListener("click", async () => {
+        if (!stream || video.readyState < 2 || !video.videoWidth) {
+            alert("La cámara todavía no está lista. Espera unos segundos.");
+            return;
+        }
+
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        
-        // Dibujar el frame actual del video en el canvas
-        const context = canvas.getContext('2d');
+
+        const context = canvas.getContext("2d");
+
+        if (!context) {
+            alert("No se pudo preparar la fotografía.");
+            return;
+        }
+
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        // Convertir a imagen
-        const imageData = canvas.toDataURL('image/jpeg', 0.8); // 0.8 es la calidad
-
-        // Ir a la vista previa
+        const imageData = canvas.toDataURL("image/jpeg", 0.85);
         guardarYIrAPreview(imageData);
     });
 
-    // Subir desde galería
-    fileInput.addEventListener('change', (e) => {
+    fileInput.addEventListener("change", (e) => {
         const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                guardarYIrAPreview(event.target.result);
-            };
-            reader.readAsDataURL(file);
+
+        if (!file) return;
+
+        if (!file.type.startsWith("image/")) {
+            alert("Selecciona un archivo de imagen válido.");
+            return;
         }
+
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            guardarYIrAPreview(event.target.result);
+        };
+
+        reader.onerror = () => {
+            alert("No se pudo leer la imagen seleccionada.");
+        };
+
+        reader.readAsDataURL(file);
     });
 
-    // =========================================================
-    // FUNCIÓN QUE GUARDA LA IMAGEN Y REDIRIGE A LA VISTA PREVIA
-    // =========================================================
     function guardarYIrAPreview(base64Image) {
-        // 1. Guardamos la foto en el almacenamiento local del navegador
-        localStorage.setItem('fotoBillete', base64Image);
-        
-        // 2. Redirigimos a la nueva pantalla de vista previa
-        window.location.href = "/preview/"; 
+        try {
+            localStorage.setItem("fotoBillete", base64Image);
+            window.location.href = "/preview/";
+        } catch (error) {
+            console.error("Error al guardar fotografía:", error);
+            alert("No se pudo guardar la fotografía. Intenta utilizar una imagen más pequeña.");
+        }
     }
 
+    window.addEventListener("pagehide", () => {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+    });
 });
