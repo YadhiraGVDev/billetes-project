@@ -1,0 +1,10 @@
+﻿__pycache__/
+*.py[cod]
+.venv/
+venv/
+test_env/
+db.sqlite3
+.env
+media/
+staticfiles/
+mysite/settings_backup.py

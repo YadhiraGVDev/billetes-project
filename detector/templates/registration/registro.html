@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block header_title %}Crear Cuenta{% endblock %}
+{% block header_subtitle %}Regístrate para guardar tu historial{% endblock %}
+
+{% block content %}
+<div class="fade-in" style="padding: 20px;">
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label style="font-size: 14px; font-weight: bold; color: #333; display: block; margin-bottom: 5px;">
+                    {{ field.label }}
+                </label>
+                
+                <!-- Renderizamos el campo con Django -->
+                <div style="width: 100%;">
+                    {{ field }}
+                </div>
+
+                <!-- Mostrar Errores (en rojo) si no cumple las reglas -->
+                {% if field.errors %}
+                    <div style="color: #d32f2f; font-size: 12px; margin-top: 5px; font-weight: bold;">
+                        {{ field.errors.0 }}
+                    </div>
+                {% endif %}
+
+                <!-- Mostrar texto de ayuda -->
+                {% if field.help_text %}
+                    <small style="color: #666; font-size: 11px; display: block; margin-top: 5px;">
+                        {{ field.help_text }}
+                    </small>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" style="width: 100%; background-color: #0b3d6b; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px;">
+            Registrarse
+        </button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'login' %}" style="color: #0b3d6b; text-decoration: none; font-weight: bold;">Ya tengo cuenta, Iniciar Sesión</a>
+    </div>
+</div>
+
+<!-- Estilos para que los inputs se vean bonitos -->
+<style>
+    input[type="text"], input[type="password"] {
+        width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box;
+    }
+</style>
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %}

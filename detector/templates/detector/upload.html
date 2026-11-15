@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}Detectar billete{% endblock %}
+{% block header_subtitle %}Apunta al billete y toma la foto{% endblock %}
+
+<!-- Ocultamos la barra inferior para que la cámara ocupe toda la pantalla -->
+{% block bottom_nav %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'detector/css/camera.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="camera-container fade-in">
+    
+    <!-- Visor de la cámara -->
+    <div class="camera-view">
+        <video id="video" autoplay playsinline></video>
+        
+        <!-- Marco de escaneo (Esquinas) -->
+        <div class="scan-frame">
+            <div class="corner top-left"></div>
+            <div class="corner top-right"></div>
+            <div class="corner bottom-left"></div>
+            <div class="corner bottom-right"></div>
+        </div>
+
+        <!-- Botón de flash (Visual) -->
+        <button class="flash-btn"><i class="fa-solid fa-bolt"></i></button>
+    </div>
+
+    <!-- Controles inferiores -->
+    <div class="camera-controls">
+        <!-- Botón de Galería -->
+        <label for="file-input" class="control-btn">
+            <i class="fa-regular fa-image"></i>
+            <span>Galería</span>
+        </label>
+        <input type="file" id="file-input" accept="image/*" style="display: none;">
+
+        <!-- Botón de Disparo (Circular) -->
+        <button id="capture-btn" class="capture-btn"></button>
+
+        <!-- Botón de Cambiar Cámara -->
+        <button id="switch-camera-btn" class="control-btn">
+            <i class="fa-solid fa-camera-rotate"></i>
+            <span>Cambiar<br>cámara</span>
+        </button>
+    </div>
+
+    <!-- Canvas oculto para procesar la imagen -->
+    <canvas id="canvas" style="display: none;"></canvas>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'detector/js/camera.js' %}"></script>
+{% endblock %}

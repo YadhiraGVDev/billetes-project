@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}Estadísticas{% endblock %}
+{% block header_subtitle %}Resumen de tus análisis{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'detector/css/estadisticas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="stats-container fade-in">
+
+    <!-- Tarjeta 1: Total de detecciones -->
+    <div class="stat-card">
+        <div class="stat-header">
+            <h3>Total de detecciones</h3>
+            <i class="fa-solid fa-chart-simple" style="color: var(--azul-uaem);"></i>
+        </div>
+        <div class="stat-body">
+            <h2 class="big-number">{{ total_detecciones }}</h2>
+            <!-- Simulamos la flecha verde que sube -->
+            <span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 12%</span>
+        </div>
+        <p class="stat-subtext">en comparación con la semana anterior</p>
+    </div>
+
+    <!-- Tarjeta 2: Denominación más detectada -->
+    <div class="stat-card">
+        <h3>Denominación más detectada</h3>
+        <div class="top-bill-row">
+            <!-- Icono o imagen de ejemplo (puedes poner una real después) -->
+            <div class="top-bill-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+            <div class="top-bill-info">
+                <h2>{{ denominacion_top }}</h2>
+                <p>{{ porcentaje_top }}% del total</p>
+                <!-- Barra de progreso simple -->
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: {{ porcentaje_top }}%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta 3: Distribución de billetes (Gráfico) -->
+    <div class="stat-card">
+        <h3>Distribución de billetes</h3>
+        <div class="chart-row">
+            <!-- Aquí va el gráfico de dona -->
+            <div class="canvas-wrapper">
+                <canvas id="donutChart"></canvas>
+            </div>
+            
+            <!-- Leyenda manual (al lado del gráfico) -->
+            <ul class="chart-legend" id="chart-legend">
+                <!-- El JS llenará esto dinámicamente -->
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Importamos Chart.js desde un CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Pasamos los datos de Python a JavaScript usando JSON -->
+{{ datos_grafico|json_script:"datos-grafico" }}
+
+<script src="{% static 'detector/js/estadisticas.js' %}"></script>
+{% endblock %}

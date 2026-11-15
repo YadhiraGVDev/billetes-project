@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Subir billete</title></head>
+<body>
+  <h1>Analizar billete</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Analizar</button>
+  </form>
+</body>
+</html>

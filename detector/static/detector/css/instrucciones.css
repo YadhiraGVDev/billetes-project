@@ -1,0 +1,121 @@
+/* =========================================
+   Estilos para la Pantalla de Instrucciones
+   ========================================= */
+
+.instructions-container {
+    padding: 15px;
+    background-color: white;
+    border-radius: 15px;
+    border: 1px solid #e2e8f0;
+    margin: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+/* Estructura de cada paso */
+.step-item {
+    display: flex;
+    gap: 15px;
+}
+
+/* Columna izquierda (Círculo + Línea) */
+.step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px; /* Ancho fijo para alinear todo */
+}
+
+/* El círculo con el número */
+.step-circle {
+    width: 40px;
+    height: 40px;
+    background-color: #2563eb; /* Azul brillante de tu diseño */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3); /* Sombra azul */
+    z-index: 2;
+}
+
+/* La línea punteada vertical */
+.step-line {
+    width: 2px;
+    flex-grow: 1;
+    border-left: 2px dashed #93c5fd; /* Azul claro punteado */
+    margin: 5px 0;
+    min-height: 40px;
+}
+
+/* Columna derecha (Texto) */
+.step-content {
+    padding-bottom: 25px;
+    flex: 1;
+}
+
+.step-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e40af; /* Azul oscuro */
+    margin-bottom: 5px;
+}
+
+/* El diamante azul pequeño */
+.step-title i.fa-diamond {
+    font-size: 10px;
+    color: #2563eb;
+}
+
+.step-content p {
+    margin: 0;
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+/* =========================================
+   Caja de Consejos
+   ========================================= */
+.tips-box {
+    background-color: #e0f2fe; /* Fondo celeste suave */
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.tips-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: #1e40af;
+}
+
+.tips-header i {
+    font-size: 18px;
+}
+
+.tips-header h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.tips-box ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #1e293b;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.tips-box li {
+    margin-bottom: 4px;
+}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}Historial{% endblock %}
+{% block header_subtitle %}Tus detecciones anteriores{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'detector/css/historial.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="history-container fade-in">
+
+    <!-- Barra de Búsqueda y Filtro -->
+    <div class="search-bar-row">
+        <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="search-input" placeholder="Buscar por fecha, denominación...">
+        </div>
+        <button class="filter-btn">
+            <i class="fa-solid fa-filter"></i>
+        </button>
+    </div>
+
+    <!-- Filtros de Denominación -->
+    <div class="filter-chips" id="filter-chips">
+        <button class="chip active" data-filter="all">Todos</button>
+        <button class="chip" data-filter="20">$20</button>
+        <button class="chip" data-filter="50">$50</button>
+        <button class="chip" data-filter="100">$100</button>
+        <button class="chip" data-filter="200">$200</button>
+        <button class="chip" data-filter="500">$500</button>
+    </div>
+
+    <!-- Lista de Registros -->
+    <div class="history-list" id="history-list">
+        {% for registro in registros %}
+        <a href="{% url 'resultado' registro.id %}"
+           class="history-card"
+           data-bill="{{ registro.denominacion_detectada|default:'' }}">
+
+            <!-- Miniatura -->
+            <div class="history-thumb">
+                {% if registro.imagen %}
+                    <img src="{{ registro.imagen.url }}" alt="Billete">
+                {% else %}
+                    <i class="fa-regular fa-image" style="color:#ccc;"></i>
+                {% endif %}
+            </div>
+
+            <!-- Detalles -->
+            <div class="history-details">
+                <h3>{{ registro.get_denominacion_detectada_display|default:"Desconocido" }}</h3>
+                <p class="date-text">{{ registro.fecha_analisis|date:"d/m/Y - H:i a" }}</p>
+                <span class="status-text">
+                    <i class="fa-solid fa-check-circle"></i> Reconocido
+                </span>
+            </div>
+
+            <!-- Porcentaje y Flecha -->
+            <div class="history-meta">
+                <span class="confidence">
+                    {% if registro.nivel_confianza %}
+                        {{ registro.nivel_confianza }}%
+                    {% else %}
+                        —
+                    {% endif %}
+                </span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </a>
+        {% empty %}
+        <!-- Mensaje si no hay registros -->
+        <div class="empty-state">
+            <i class="fa-regular fa-folder-open"></i>
+            <p>No hay análisis guardados aún.</p>
+            <a href="{% url 'upload' %}">Analizar mi primer billete</a>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'detector/js/historial.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}Resultado de la detección{% endblock %}
+{% block header_subtitle %}Análisis completado con éxito{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'detector/css/result.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="result-container fade-in">
+
+    <!-- Banner Verde de Éxito -->
+    <div class="success-banner">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Billete identificado</span>
+    </div>
+
+    <!-- Tarjeta de Resultados -->
+    <div class="result-card">
+        
+        <!-- Imagen del Billete -->
+        {% if registro.imagen %}
+            <div class="result-image-container">
+                <img src="{{ registro.imagen.url }}" alt="Billete analizado">
+            </div>
+        {% endif %}
+
+        <!-- Denominación Principal -->
+        <div class="denomination-box">
+            <h2>{{ registro.get_denominacion_detectada_display|default:"Desconocido" }}</h2>
+            <p>Quinientos pesos</p> <!-- Puedes hacer esto dinámico en el futuro -->
+        </div>
+
+        <!-- Tarjetas de Información (Confianza y Estado) -->
+        <div class="info-grid">
+            <div class="info-box">
+                <span class="info-label">Confianza del modelo</span>
+                <span class="info-value">{{ registro.nivel_confianza }}%</span>
+            </div>
+            <div class="info-box">
+                <span class="info-label">Estado</span>
+                <span class="info-value success-text">
+                    <i class="fa-solid fa-shield-check"></i> Auténtico
+                </span>
+            </div>
+        </div>
+
+        <!-- Fecha y Hora -->
+        <div class="date-box">
+            <i class="fa-regular fa-calendar"></i>
+            <span>{{ registro.fecha_analisis|date:"d M Y - H:i a" }}</span>
+        </div>
+
+        <!-- Botones de Acción -->
+        <button class="btn-details">Ver detalles</button>
+        
+        <a href="{% url 'upload' %}" class="btn-analyze-again">
+            <i class="fa-solid fa-camera"></i> Analizar otro billete
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+
+<!-- Ocultamos la barra inferior para enfocar la atención en el resultado -->
+{% block bottom_nav %}{% endblock %}

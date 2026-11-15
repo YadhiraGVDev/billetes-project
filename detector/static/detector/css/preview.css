@@ -1,0 +1,123 @@
+/* =========================================
+   Estilos para la Vista Previa de la Imagen
+   ========================================= */
+
+.preview-container {
+    padding: 15px;
+}
+
+.preview-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 20px;
+}
+
+/* La imagen del billete */
+#preview-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    background-color: #f8f9fa; /* Fondo por si la imagen no llena el espacio */
+    border-bottom: 1px solid #eee;
+}
+
+/* Sección de detalles del archivo */
+.file-details {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    gap: 15px;
+}
+
+.file-icon {
+    background-color: #f1f5f9;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #64748b;
+}
+
+.file-text h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.file-text p {
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* Botones de acción */
+.preview-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-row {
+    display: flex;
+    gap: 12px;
+}
+
+.action-row button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    transition: all 0.2s;
+}
+
+.btn-outline-blue {
+    border: 2px solid #0b3b60; /* Azul UAEM */
+    color: #0b3b60;
+}
+
+.btn-outline-blue:hover {
+    background: #f0f9ff;
+}
+
+.btn-outline-red {
+    border: 2px solid #ef4444; /* Rojo */
+    color: #ef4444;
+}
+
+.btn-outline-red:hover {
+    background: #fef2f2;
+}
+
+.btn-solid-blue {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: #0b5e9b; /* Azul más brillante para el botón principal */
+    color: white;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.btn-solid-blue:hover {
+    background-color: #084a7a;
+}

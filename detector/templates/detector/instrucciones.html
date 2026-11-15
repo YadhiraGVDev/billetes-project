@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}Instrucciones{% endblock %}
+{% block header_subtitle %}Guía de uso{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'detector/css/instrucciones.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="instructions-container fade-in">
+
+    <!-- Paso 1 -->
+    <div class="step-item">
+        <div class="step-left">
+            <div class="step-circle">1</div>
+            <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+            <div class="step-title">
+                <i class="fa-solid fa-diamond"></i> Selecciona o toma una foto
+            </div>
+            <p>Puedes elegir una imagen desde tu galería o usar la cámara de tu dispositivo.</p>
+        </div>
+    </div>
+
+    <!-- Paso 2 -->
+    <div class="step-item">
+        <div class="step-left">
+            <div class="step-circle">2</div>
+            <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+            <div class="step-title">
+                <i class="fa-solid fa-diamond"></i> Revisa la vista previa
+            </div>
+            <p>Verifica que la imagen sea clara y que el billete esté completo.</p>
+        </div>
+    </div>
+
+    <!-- Paso 3 -->
+    <div class="step-item">
+        <div class="step-left">
+            <div class="step-circle">3</div>
+            <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+            <div class="step-title">
+                <i class="fa-solid fa-diamond"></i> Analiza el billete
+            </div>
+            <p>Presiona el botón de analizar para que el sistema procese la imagen.</p>
+        </div>
+    </div>
+
+    <!-- Paso 4 -->
+    <div class="step-item">
+        <div class="step-left">
+            <div class="step-circle">4</div>
+            <!-- Sin línea abajo del último paso -->
+        </div>
+        <div class="step-content">
+            <div class="step-title">
+                <i class="fa-solid fa-diamond"></i> Consulta el resultado
+            </div>
+            <p>Revisa la denominación y el estado de la detección.</p>
+        </div>
+    </div>
+
+    <!-- Caja de Consejos -->
+    <div class="tips-box">
+        <div class="tips-header">
+            <i class="fa-solid fa-location-dot"></i>
+            <h4>Consejos adicionales</h4>
+        </div>
+        <ul>
+            <li>Usa buena iluminación.</li>
+            <li>Evita sombras y reflejos.</li>
+            <li>Coloca el billete sobre una superficie plana.</li>
+        </ul>
+    </div>
+
+</div>
+{% endblock %}

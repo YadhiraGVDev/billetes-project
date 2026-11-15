@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAEM-bench - Cargando</title>
+    
+    <!-- FontAwesome (Iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tu archivo CSS separado -->
+    <link rel="stylesheet" href="{% static 'detector/css/splash.css' %}">
+</head>
+<body>
+
+    <!-- Ondas de fondo -->
+    <div class="wave-top"></div>
+    <div class="wave-bottom"></div>
+
+    <!-- Contenido central -->
+    <div class="content">
+        <div class="icon-container">
+            <i class="fa-solid fa-money-bill-wave"></i>
+            <div class="corner-frame"></div>
+            <div class="corner-frame-inner"></div>
+        </div>
+
+        <h1>UAEM-<span>bench</span></h1>
+        <p>Sistema de detección y análisis<br>de billetes mexicanos</p>
+    </div>
+
+    <!-- LÓGICA DE DJANGO: Dependiendo de la sesión, mostramos botones o el spinner -->
+    
+    {% if user.is_authenticated %}
+        <!-- SI YA INICIÓ SESIÓN: Mostramos el spinner y el JS hará la redirección -->
+        <div class="loader-container">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
+
+        <!-- Datos para el JS -->
+        <div id="redirect-data" data-url="{% url 'home' %}" style="display: none;"></div>
+        <script src="{% static 'detector/js/splash.js' %}"></script>
+
+    {% else %}
+        <!-- SI NO HA INICIADO SESIÓN: Mostramos los botones de Login y Registro -->
+        <!-- (Usamos estilos en línea para que se acomoden debajo del logo sin romper tu CSS) -->
+        <div style="position: absolute; bottom: 15%; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; padding: 0 30px; box-sizing: border-box;">
+            
+            <a href="{% url 'login' %}" style="background-color: #4da6ff; color: white; text-decoration: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 16px; width: 100%; max-width: 300px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.2); border: 2px solid #4da6ff;">
+                Iniciar Sesión
+            </a>
+            
+            <a href="{% url 'registro' %}" style="background-color: transparent; color: #4da6ff; text-decoration: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 16px; width: 100%; max-width: 300px; text-align: center; border: 2px solid #4da6ff;">
+                Registrarse
+            </a>
+            
+        </div>
+    {% endif %}
+
+</body>
+</html>

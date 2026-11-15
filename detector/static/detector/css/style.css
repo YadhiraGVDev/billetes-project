@@ -1,0 +1,333 @@
+/* =========================================
+   VARIABLES DE COLOR UAEM-BENCH
+   ========================================= */
+:root {
+    --azul-uaem: #0b3b60;
+    --azul-oscuro: #082a45;
+    --gris-fondo: #f0f4f8;
+    --gris-texto: #6c757d;
+    --verde-exito: #198754;
+}
+
+/* =========================================
+   ESTILOS BASE (Body)
+   ========================================= */
+body {
+    background-color: var(--gris-fondo);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* =========================================
+   CONTENEDOR PRINCIPAL (Simula App Móvil)
+   ========================================= */
+.app-container {
+    max-width: 480px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    min-height: 100vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    position: relative;
+    padding-bottom: 70px; /* Espacio para el menú inferior */
+}
+
+/* =========================================
+   ENCABEZADO (Header Azul)
+   ========================================= */
+.header-azul {
+    background-color: var(--azul-uaem);
+    color: white;
+    padding: 20px 15px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra superior con título y botón atrás */
+.header-top {
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.header-top h2 {
+    margin: 0;
+    font-size: 22px;
+    color: white;
+    width: 100%;
+    text-align: left;
+    padding-left: 40px; /* Espacio para el botón de atrás */
+}
+
+/* Botón de regresar */
+.btn-back {
+    position: absolute;
+    left: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Recuadro de información */
+.header-info {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header-info i {
+    font-size: 24px;
+    color: #38bdf8;
+}
+
+.header-info h3, .header-info h2 {
+    margin: 0;
+    font-size: 15px;
+    color: white;
+}
+
+.header-info p {
+    margin: 5px 0 0 0;
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+/* =========================================
+   CONTENIDO PRINCIPAL
+   ========================================= */
+.main-content {
+    padding: 20px 15px;
+}
+
+/* =========================================
+   TARJETAS DEL MENÚ (Grid)
+   ========================================= */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.card {
+    background: white;
+    padding: 20px 15px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+    border: 1px solid #eee;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    margin: 5px 0;
+    font-size: 16px;
+    color: var(--azul-uaem);
+}
+
+.card p {
+    margin: 0;
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* =========================================
+   BARRA DE NAVEGACIÓN INFERIOR
+   ========================================= */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 480px;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 100;
+    border-top: 1px solid #ddd;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #64748b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    gap: 4px;
+    transition: color 0.2s;
+}
+
+.nav-item:hover, .nav-item.active {
+    color: var(--azul-uaem);
+    font-weight: bold;
+}
+
+.nav-item i {
+    font-size: 18px;
+}
+
+/* =========================================
+   BOTONES GENERALES
+   ========================================= */
+.btn-primario {
+    background-color: var(--azul-uaem);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primario:hover {
+    background-color: var(--azul-oscuro);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   ESTILOS PARA CONFIGURACIÓN (Mantenidos)
+   ========================================= */
+.settings-group {
+    background: white !important;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 20px;
+}
+
+.settings-item {
+    display: flex !important; 
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 15px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    gap: 15px !important;
+    text-decoration: none !important;
+    color: #333 !important;
+}
+
+.settings-item:last-child {
+    border-bottom: none !important;
+}
+
+.settings-item:hover {
+    background-color: #f8fafc !important;
+}
+
+.settings-icon {
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-size: 20px !important;
+    flex-shrink: 0 !important;
+}
+
+.settings-text {
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
+
+.settings-text h3 {
+    margin: 0 !important;
+    font-size: 16px !important;
+    color: #1e293b !important;
+    font-weight: 600 !important;
+}
+
+.settings-text p {
+    margin: 4px 0 0 0 !important;
+    font-size: 13px !important;
+    color: #64748b !important;
+}
+
+/* Interruptor (Switch) tipo iOS */
+.switch {
+    position: relative !important;
+    display: inline-block !important;
+    width: 50px !important;
+    height: 28px !important;
+    flex-shrink: 0 !important;
+}
+
+.switch input { 
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+.slider {
+    position: absolute !important;
+    cursor: pointer !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background-color: #cbd5e1 !important;
+    transition: .4s !important;
+    border-radius: 28px !important;
+}
+
+.slider:before {
+    position: absolute !important;
+    content: "" !important;
+    height: 22px !important;
+    width: 22px !important;
+    left: 3px !important;
+    bottom: 3px !important;
+    background-color: white !important;
+    transition: .4s !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+    border-radius: 50% !important;
+}
+
+input:checked + .slider {
+    background-color: var(--azul-uaem) !important;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px) !important;
+}
+
+/* =========================================
+   ANIMACIONES
+   ========================================= */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

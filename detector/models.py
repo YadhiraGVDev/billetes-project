@@ -1,0 +1,61 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+
+# ==========================================
+# MODELO DE DETECCIÓN DE BILLETES
+# ==========================================
+class DetectionRecord(models.Model):
+    imagen = models.ImageField(upload_to='billetes/')
+    denominacion_detectada = models.CharField(max_length=50, blank=True, null=True)
+    nivel_confianza = models.FloatField(blank=True, null=True)
+    fecha_analisis = models.DateTimeField(auto_now_add=True)
+
+    # --- NUEVOS CAMPOS: CALIDAD DEL BILLETE ---
+    doblado = models.BooleanField(default=False)
+    arrugado = models.BooleanField(default=False)
+    roto = models.BooleanField(default=False)
+    puntaje_calidad = models.FloatField(default=100)
+    detalles_calidad = models.JSONField(default=list, blank=True)
+
+    # Si en tu migración anterior renombraste algún campo (como el usuario),
+    # asegúrate de mantenerlo aquí. Por ejemplo:
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-fecha_analisis']
+
+    def __str__(self):
+        return (
+            f"{self.denominacion_detectada or 'Sin denominación'} - "
+            f"{self.fecha_analisis.strftime('%Y-%m-%d %H:%M')}"
+        )
+
+    @property
+    def estado_calidad(self):
+        """Texto legible del estado del billete."""
+        if self.roto:
+            return "roto"
+        if self.doblado and self.arrugado:
+            return "doblado y arrugado"
+        if self.doblado:
+            return "doblado"
+        if self.arrugado:
+            return "arrugado"
+        return "ok"
+
+    @property
+    def apto(self):
+        """True si el billete no está roto, doblado ni arrugado."""
+        return not (self.roto or self.doblado or self.arrugado)
+
+
+# ==========================================
+# NUEVO MODELO: PERFIL DE USUARIO
+# ==========================================
+class Perfil(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
+    foto = models.ImageField(upload_to='perfiles/', null=True, blank=True)
+
+    def __str__(self):
+        return f"Perfil de {self.usuario.username}"

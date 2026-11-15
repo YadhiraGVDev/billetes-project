@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}Configuración{% endblock %}
+{% block header_subtitle %}Ajustes de la aplicación{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+
+    <!-- ========================================== -->
+    <!-- NUEVA SECCIÓN: PERFIL DE USUARIO           -->
+    <!-- ========================================== -->
+    <div style="text-align: center; margin-bottom: 30px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee;">
+        <!-- Foto actual o ícono por defecto -->
+        {% if perfil.foto %}
+            <img src="{{ perfil.foto.url }}" alt="Foto de perfil" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #0b3d6b; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        {% else %}
+            <div style="width: 100px; height: 100px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; justify-content: center; align-items: center; margin: 0 auto 10px auto; font-size: 40px; border: 3px solid #0b3d6b;">
+                <i class="fa-solid fa-user"></i>
+            </div>
+        {% endif %}
+        
+        <h3 style="margin: 0; font-size: 18px; color: #333;">{{ request.user.username }}</h3>
+        <p style="margin: 5px 0 15px 0; font-size: 12px; color: #666;">Miembro de UAEM-bench</p>
+
+        <!-- Formulario para subir foto -->
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="margin-bottom: 10px; text-align: left;">
+                {{ form.foto }}
+            </div>
+            <button type="submit" style="background: #0284c7; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-camera"></i> Actualizar Foto
+            </button>
+        </form>
+    </div>
+    <!-- ========================================== -->
+
+    <!-- Sección: Preferencias -->
+    <h4 style="color: var(--azul-uaem); margin-bottom: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Preferencias</h4>
+
+    <div class="settings-group">
+        <!-- Opción 1 -->
+        <div class="settings-item">
+            <div class="settings-icon" style="background: #e0f2fe; color: #0284c7;">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <div class="settings-text">
+                <h3>Notificaciones</h3>
+                <p>Recibir alertas de análisis</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <!-- Opción 2 -->
+        <div class="settings-item">
+            <div class="settings-icon" style="background: #dcfce7; color: #16a34a;">
+                <i class="fa-solid fa-wifi"></i>
+            </div>
+            <div class="settings-text">
+                <h3>Usar solo Wi-Fi</h3>
+                <p>Para sincronizar historial</p>
+            </div>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Sección: Cuenta y Datos -->
+    <h4 style="color: var(--azul-uaem); margin: 25px 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Datos</h4>
+
+    <div class="settings-group">
+        <a href="#" class="settings-item" style="text-decoration: none; color: inherit;">
+            <div class="settings-icon" style="background: #fef3c7; color: #d97706;">
+                <i class="fa-solid fa-database"></i>
+            </div>
+            <div class="settings-text">
+                <h3>Borrar historial</h3>
+                <p>Eliminar todos los análisis guardados</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: #ccc;"></i>
+        </a>
+    </div>
+
+    <!-- Sección: Información -->
+    <h4 style="color: var(--azul-uaem); margin: 25px 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Información</h4>
+
+    <div class="settings-group">
+        <a href="{% url 'acerca_de' %}" class="settings-item" style="text-decoration: none; color: inherit;">
+            <div class="settings-icon" style="background: #f3e8ff; color: #9333ea;">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="settings-text">
+                <h3>Acerca de</h3>
+                <p>Versión 1.0.0</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: #ccc;"></i>
+        </a>
+    </div>
+
+    <!-- ✅ Botón de Cerrar Sesión (Ahora vive solo aquí) -->
+    <div style="padding: 20px; margin-top: 30px;">
+        <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+            {% csrf_token %}
+            <button type="submit"
+                    style="width: 100%; background-color: #e74c3c; color: white;
+                           border: none; padding: 15px; border-radius: 10px;
+                           font-size: 16px; font-weight: bold; cursor: pointer;
+                           display: flex; justify-content: center; align-items: center;
+                           gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+            </button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

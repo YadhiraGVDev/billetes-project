@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}Iniciar Sesión{% endblock %}
+{% block header_subtitle %}Ingresa tus credenciales para continuar{% endblock %}
+
+{% block content %}
+<div class="fade-in" style="padding: 20px;">
+    
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        
+        <!-- Mostrar errores si la contraseña es incorrecta -->
+        {% if form.errors %}
+            <div style="background: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 14px; text-align: center;">
+                Usuario o contraseña incorrectos. Intenta de nuevo.
+            </div>
+        {% endif %}
+
+        <!-- Campo Usuario -->
+        <div style="margin-bottom: 15px; text-align: left;">
+            <label style="font-size: 14px; font-weight: bold; color: #333; margin-bottom: 5px; display: block;">Usuario</label>
+            <input type="text" name="username" required
+                   style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+        </div>
+
+        <!-- Campo Contraseña -->
+        <div style="margin-bottom: 25px; text-align: left;">
+            <label style="font-size: 14px; font-weight: bold; color: #333; margin-bottom: 5px; display: block;">Contraseña</label>
+            <input type="password" name="password" required
+                   style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box;">
+        </div>
+
+        <!-- Botón Entrar -->
+        <button type="submit"
+                style="width: 100%; background-color: #0b3d6b; color: white;
+                       border: none; padding: 15px; border-radius: 10px;
+                       font-size: 16px; font-weight: bold; cursor: pointer;
+                       box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            Ingresar
+        </button>
+        
+        <!-- Para que Django sepa a dónde ir después de entrar -->
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
+</div>
+{% endblock %}
+
+<!-- Ocultamos la barra de navegación inferior en el login -->
+{% block bottom_nav %}{% endblock %}

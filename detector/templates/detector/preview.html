@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}Vista previa{% endblock %}
+{% block header_subtitle %}Revisa que la imagen sea clara{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'detector/css/preview.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="preview-container fade-in">
+    
+    <!-- Tarjeta contenedora de la imagen -->
+    <div class="preview-card">
+        <!-- Imagen capturada -->
+        <img id="preview-image" src="" alt="Vista previa del billete">
+        
+        <!-- Detalles del archivo -->
+        <div class="file-details">
+            <div class="file-icon">
+                <i class="fa-solid fa-image"></i>
+            </div>
+            <div class="file-text">
+                <h4 id="file-name">billete_500.jpg</h4>
+                <p id="file-size">2.4 MB</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="preview-actions">
+        <div class="action-row">
+            <button id="retake-btn" class="btn-outline-blue">
+                <i class="fa-solid fa-crop-simple"></i> Cambiar imagen
+            </button>
+            <button id="delete-btn" class="btn-outline-red">
+                <i class="fa-solid fa-trash"></i> Eliminar
+            </button>
+        </div>
+        
+        <button id="analyze-btn" class="btn-solid-blue">
+            <i class="fa-solid fa-expand"></i> Analizar billete
+        </button>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'detector/js/preview.js' %}"></script>
+{% endblock %}

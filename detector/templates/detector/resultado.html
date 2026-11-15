@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Resultado</title></head>
+<body>
+  {% for m in messages %}
+    <p class="msg {{ m.tags }}">{{ m }}</p>
+  {% endfor %}
+
+  <h2>Resultado del análisis</h2>
+  <img src="{{ a.imagen.url }}" style="max-width:400px">
+
+  <ul>
+    <li><b>Denominación:</b> {{ a.denominacion|default:"desconocida" }}
+        {% if a.confianza_denominacion %}
+          ({{ a.confianza_denominacion|floatformat:2 }})
+        {% endif %}
+    </li>
+    <li><b>Doblado:</b> {{ a.doblado|yesno:"Sí,No" }}</li>
+    <li><b>Arrugado:</b> {{ a.arrugado|yesno:"Sí,No" }}</li>
+    <li><b>Roto:</b> {{ a.roto|yesno:"Sí,No" }}</li>
+    <li><b>Puntaje de calidad:</b> {{ a.puntaje_calidad|floatformat:0 }}/100</li>
+  </ul>
+
+  {% if a.detalles %}
+    <h3>Detalles</h3>
+    <ul>{% for d in a.detalles %}<li>{{ d }}</li>{% endfor %}</ul>
+  {% endif %}
+
+  <a href="{% url 'billetes:subir' %}">Analizar otro</a>
+</body>
+</html>

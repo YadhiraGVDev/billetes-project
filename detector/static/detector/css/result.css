@@ -1,0 +1,161 @@
+/* =========================================
+   Estilos para la Pantalla de Resultados
+   ========================================= */
+
+.result-container {
+    padding: 15px;
+}
+
+/* Banner Verde Superior */
+.success-banner {
+    background-color: #198754; /* Verde éxito */
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+/* Tarjeta Blanca Principal */
+.result-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+/* Contenedor de la Imagen */
+.result-image-container {
+    width: 100%;
+    height: 180px;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.result-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Hace que la imagen llene el espacio */
+}
+
+/* Caja de Denominación */
+.denomination-box {
+    text-align: center;
+    padding: 20px 15px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.denomination-box h2 {
+    margin: 0;
+    font-size: 32px;
+    color: var(--azul-uaem);
+    font-weight: bold;
+}
+
+.denomination-box p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    color: var(--gris-texto);
+}
+
+/* Grid de Información (Confianza y Estado) */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 15px;
+}
+
+.info-box {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.info-label {
+    font-size: 11px;
+    color: var(--gris-texto);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.info-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1e293b;
+}
+
+.success-text {
+    color: #198754;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Caja de Fecha */
+.date-box {
+    margin: 0 15px 20px 15px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--gris-texto);
+}
+
+/* Botones */
+.btn-details {
+    display: block;
+    width: calc(100% - 30px);
+    margin: 0 auto 10px auto;
+    padding: 14px;
+    background-color: var(--azul-uaem); /* Azul oscuro */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-details:hover {
+    background-color: #082a45;
+}
+
+.btn-analyze-again {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: calc(100% - 30px);
+    margin: 0 auto 20px auto;
+    padding: 14px;
+    background-color: transparent;
+    color: var(--azul-uaem);
+    border: 2px solid var(--azul-uaem);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-analyze-again:hover {
+    background-color: #f0f9ff;
+}

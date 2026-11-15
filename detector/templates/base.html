@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAEM-bench</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'detector/css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body style="margin: 0; padding: 0; background: #eef2f5; display: flex; justify-content: center;">
+
+    <!-- CONTENEDOR DE APP MÓVIL -->
+    <div class="app-container" style="position: relative; width: 100%; max-width: 480px; height: 100vh; background: #f8f9fa; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); overflow: hidden;">
+        
+        <!-- ENCABEZADO DINÁMICO -->
+        <header class="header-azul" style="background: #0b3d6b; padding: 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; color: white; padding-bottom: 30px; flex-shrink: 0;">
+            <div class="header-top" style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                <button class="btn-back" onclick="history.back()" style="background: transparent; border: none; color: white; font-size: 20px; cursor: pointer;">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <h2 style="margin: 0; font-size: 20px; font-weight: bold;">UAEM-bench</h2>
+            </div>
+
+            <div class="header-info" style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px;">
+                
+                <!-- FOTO DE PERFIL -->
+                {% if perfil and perfil.foto %}
+                    <img src="{{ perfil.foto.url }}" alt="Perfil" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #4da6ff;">
+                {% else %}
+                    <div style="width: 45px; height: 45px; background: transparent; display: flex; justify-content: center; align-items: center; font-size: 30px; color: #4da6ff;">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                {% endif %}
+
+                <div>
+                    <h3 style="margin: 0; font-size: 16px;">{% block header_title %}Detecta, identifica y analiza{% endblock %}</h3>
+                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #a0c4e8;">{% block header_subtitle %}billetes mexicanos con inteligencia artificial{% endblock %}</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content" style="flex: 1; padding: 20px; padding-bottom: 80px; overflow-y: auto;">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <!-- BARRA INFERIOR (Alineada perfectamente al fondo) -->
+        {% block bottom_nav %}
+        <nav style="width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; flex-shrink: 0;">
+            <a href="{% url 'home' %}" style="text-decoration: none; color: #666; text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
+                <i class="fa-solid fa-house" style="font-size: 20px; margin-bottom: 3px;"></i>
+                <span>Inicio</span>
+            </a>
+            <a href="{% url 'historial' %}" style="text-decoration: none; color: #666; text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
+                <i class="fa-solid fa-clock" style="font-size: 20px; margin-bottom: 3px;"></i>
+                <span>Historial</span>
+            </a>
+            <a href="{% url 'estadisticas' %}" style="text-decoration: none; color: #666; text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
+                <i class="fa-solid fa-chart-simple" style="font-size: 20px; margin-bottom: 3px;"></i>
+                <span>Estadísticas</span>
+            </a>
+            <a href="{% url 'configuracion' %}" style="text-decoration: none; color: #666; text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
+                <i class="fa-solid fa-gear" style="font-size: 20px; margin-bottom: 3px;"></i>
+                <span>Más</span>
+            </a>
+        </nav>
+        {% endblock %}
+
+    </div>
+
+    <script src="{% static 'detector/js/main.js' %}"></script>
+</body>
+</html>
