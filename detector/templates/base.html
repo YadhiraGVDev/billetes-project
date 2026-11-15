@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,10 +11,10 @@
 </head>
 <body style="margin: 0; padding: 0; background: #eef2f5; display: flex; justify-content: center;">
 
-    <!-- CONTENEDOR DE APP MÓVIL -->
+    <!-- CONTENEDOR DE APP MÃ“VIL -->
     <div class="app-container" style="position: relative; width: 100%; max-width: 480px; height: 100vh; background: #f8f9fa; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); overflow: hidden;">
         
-        <!-- ENCABEZADO DINÁMICO -->
+        <!-- ENCABEZADO DINÃMICO -->
         <header class="header-azul" style="background: #0b3d6b; padding: 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; color: white; padding-bottom: 30px; flex-shrink: 0;">
             <div class="header-top" style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
                 <button class="btn-back" onclick="history.back()" style="background: transparent; border: none; color: white; font-size: 20px; cursor: pointer;">
@@ -60,11 +60,11 @@
             </a>
             <a href="{% url 'estadisticas' %}" style="text-decoration: none; color: #666; text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
                 <i class="fa-solid fa-chart-simple" style="font-size: 20px; margin-bottom: 3px;"></i>
-                <span>Estadísticas</span>
+                <span>EstadÃ­sticas</span>
             </a>
             <a href="{% url 'configuracion' %}" style="text-decoration: none; color: #666; text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
                 <i class="fa-solid fa-gear" style="font-size: 20px; margin-bottom: 3px;"></i>
-                <span>Más</span>
+                <span>MÃ¡s</span>
             </a>
         </nav>
         {% endblock %}
@@ -72,5 +72,7 @@
     </div>
 
     <script src="{% static 'detector/js/main.js' %}"></script>
+    {% block extra_js %}
+    {% endblock %}
 </body>
 </html>
