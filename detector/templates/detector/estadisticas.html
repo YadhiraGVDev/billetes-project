@@ -6,6 +6,48 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'detector/css/estadisticas.css' %}">
+
+<!-- BLOQUE DE CORRECCIÓN PARA MODO OSCURO -->
+<style>
+    /* Forzamos a que las tarjetas siempre tengan fondo blanco y texto oscuro */
+    .stat-card {
+        background-color: #ffffff !important;
+        color: #1e293b !important; /* Gris muy oscuro */
+    }
+
+    /* Forzamos los títulos y textos dentro de las tarjetas a que sean visibles */
+    .stat-card h2, 
+    .stat-card h3, 
+    .stat-card p, 
+    .stat-card span,
+    .stat-card .big-number,
+    .stat-card .stat-subtext {
+        color: #1e293b !important; 
+    }
+
+    /* Ajustes específicos para que el número gigante resalte */
+    .stat-card .big-number {
+        color: #0f172a !important; /* Casi negro */
+    }
+
+    /* El texto secundario (como el "en comparación con...") que sea un gris legible */
+    .stat-card .stat-subtext,
+    .stat-card p {
+        color: #64748b !important; /* Gris medio */
+    }
+
+    /* Arreglar la leyenda del gráfico si también se vuelve invisible */
+    .chart-legend li {
+        color: #1e293b !important;
+    }
+
+    /* Mantener el color verde de la flecha de tendencia */
+    .stat-card .trend-up {
+        color: #10b981 !important; /* Verde */
+    }
+</style>
+<!-- FIN DEL BLOQUE DE CORRECCIÓN -->
+
 {% endblock %}
 
 {% block content %}
