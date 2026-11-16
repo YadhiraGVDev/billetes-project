@@ -46,3 +46,24 @@ input, select, textarea {
     color: var(--text-main) !important;
     border: 1px solid var(--border-color) !important;
 }
+
+/* ========================================== */
+/* FIX PARA LAS TARJETAS DEL MENÚ EN MODO OSCURO */
+/* ========================================== */
+
+[data-theme="dark"] a > div,
+[data-theme="dark"] .card,
+[data-theme="dark"] .menu-card {
+    background-color: #1e1e1e !important;
+    border: 1px solid #333 !important;
+    box-shadow: none !important;
+}
+
+[data-theme="dark"] a > div h3,
+[data-theme="dark"] a > div p {
+    color: #f1f1f1 !important;
+}
+
+[data-theme="dark"] a > div p {
+    color: #b0b0b0 !important; /* Un gris claro para los subtítulos */
+}
