@@ -6,6 +6,37 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'detector/css/instrucciones.css' %}">
+
+<!-- BLOQUE DE CORRECCIÓN PARA MODO OSCURO -->
+<style>
+    /* Forzar que los textos de los pasos sean oscuros y visibles */
+    .step-content p {
+        color: #334155 !important; /* Gris oscuro legible */
+    }
+    
+    .step-title {
+        color: #1e3a8a !important; /* Azul oscuro para los títulos */
+    }
+
+    /* Forzar la caja de consejos (fondo azul claro) a tener texto oscuro */
+    .tips-box {
+        background-color: #e0f2fe !important; /* Azul muy pálido de fondo */
+        color: #0c4a6e !important; /* Texto azul oscuro */
+    }
+
+    .tips-box h4, 
+    .tips-box li, 
+    .tips-box i {
+        color: #0c4a6e !important;
+    }
+
+    /* Asegurar que los círculos de los números (1, 2, 3, 4) sigan con su color y el texto blanco */
+    .step-circle {
+        color: #ffffff !important;
+    }
+</style>
+<!-- FIN DEL BLOQUE DE CORRECCIÓN -->
+
 {% endblock %}
 
 {% block content %}
