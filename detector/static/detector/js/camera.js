@@ -101,8 +101,14 @@
             return;
         }
 
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+        // MODIFICACIÓN: Recorte cuadrado en el centro (70% del área visible)
+        // Esto elimina el fondo de la mesa y deja solo el billete
+        const size = Math.min(video.videoWidth, video.videoHeight) * 0.7; 
+        const startX = (video.videoWidth - size) / 2;
+        const startY = (video.videoHeight - size) / 2;
+
+        canvas.width = size;
+        canvas.height = size;
 
         const context = canvas.getContext("2d");
 
@@ -111,10 +117,11 @@
             return;
         }
 
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // Dibuja solo la parte central del video en el canvas
+        context.drawImage(video, startX, startY, size, size, 0, 0, size, size);
 
-        // CAMBIO 1: Bajamos la calidad a 0.7 para que pese menos y no sature el localStorage en móviles
-        const imageData = canvas.toDataURL("image/jpeg", 0.7);
+        // Calidad 0.8 (buen equilibrio entre peso y detalle para la IA)
+        const imageData = canvas.toDataURL("image/jpeg", 0.8);
         
         guardarYIrAPreview(imageData);
     });
@@ -145,14 +152,9 @@
     function guardarYIrAPreview(base64Image) {
         try {
             localStorage.setItem("fotoBillete", base64Image);
-            
-            // CAMBIO 2: Usamos una ruta relativa simple. 
-            // Si tu URL en Django es '/preview/', esto funcionará perfecto.
             window.location.href = "/preview/"; 
-            
         } catch (error) {
             console.error("Error al guardar fotografía:", error);
-            // Este error suele pasar si la foto es muy grande para el almacenamiento del móvil
             alert("La fotografía es muy pesada para procesarla. Intenta de nuevo o usa la galería.");
         }
     }

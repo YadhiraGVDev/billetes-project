@@ -27,17 +27,22 @@
             </div>
         {% endif %}
 
-        <!-- Denominación Principal -->
+        <!-- Denominación Principal (CORREGIDO) -->
         <div class="denomination-box">
-            <h2>{{ registro.get_denominacion_detectada_display|default:"Desconocido" }}</h2>
-            <p>Quinientos pesos</p> <!-- Puedes hacer esto dinámico en el futuro -->
+            <h2>{{ registro.denominacion_detectada|default:"No detectado" }}</h2>
+            {% if registro.denominacion_detectada %}
+                <p>{{ registro.denominacion_detectada }} pesos</p>
+            {% else %}
+                <p>Intenta tomar la foto de nuevo</p>
+            {% endif %}
         </div>
 
         <!-- Tarjetas de Información (Confianza y Estado) -->
         <div class="info-grid">
             <div class="info-box">
                 <span class="info-label">Confianza del modelo</span>
-                <span class="info-value">{{ registro.nivel_confianza }}%</span>
+                <!-- Corregido: Se le agregó el símbolo de % y se formateó a 1 decimal -->
+                <span class="info-value">{{ registro.nivel_confianza|floatformat:1 }}%</span>
             </div>
             <div class="info-box">
                 <span class="info-label">Estado</span>

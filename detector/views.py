@@ -3,8 +3,8 @@ import json
 import logging
 import os
 import re
-import urllib.request  # 👈 NUEVO: Para descargar la imagen de Cloudinary
-import tempfile      # 👈 NUEVO: Para crear archivos temporales en Render
+import urllib.request
+import tempfile
 
 from django.contrib.auth import logout, login
 from django.contrib import messages
@@ -54,7 +54,7 @@ def menu(request):
 @require_http_methods(["GET", "POST"])
 def upload_and_detect(request):
     if request.method == 'GET':
-        return render(request, 'detector/upload.html')  # No enviamos perfil
+        return render(request, 'detector/upload.html')
 
     # --- Parseo seguro del JSON ---
     try:
@@ -87,7 +87,7 @@ def upload_and_detect(request):
     if len(decoded) > MAX_IMAGE_SIZE:
         return JsonResponse({'error': 'Imagen demasiado grande'}, status=413)
 
-    # --- Análisis de CALIDAD (antes de crear el registro) ---
+    # --- Análisis de CALIDAD ---
     try:
         calidad = analizador_calidad.analizar_desde_bytes(decoded)
     except Exception:
@@ -100,40 +100,39 @@ def upload_and_detect(request):
             "detalles": ["Análisis de calidad no disponible"],
         }
 
-    # --- Predicción de denominación ---
+    # --- Guardar Registro ---
     image_file = ContentFile(decoded, name=f'billete_temp.{ext}')
 
     record = DetectionRecord(imagen=image_file)
-    # Guardamos la calidad ya calculada directamente en el registro
     record.doblado = calidad["doblado"]
     record.arrugado = calidad["arrugado"]
     record.roto = calidad["roto"]
     record.puntaje_calidad = calidad["puntaje_calidad"]
     record.detalles_calidad = calidad["detalles"]
-    record.save()  # Necesario para tener la URL de Cloudinary (o local)
+    record.save()
 
     # ==========================================
-    # MODIFICACIÓN PARA CLOUDINARY EN RENDER
+    # PREDICCIÓN (Lógica Local y Producción)
     # ==========================================
     try:
-        # 1. Obtenemos la URL (funciona en local y en producción con Cloudinary)
-        image_url = record.imagen.url
-        
-        # 2. Creamos un archivo temporal oculto
-        with tempfile.NamedTemporaryFile(delete=False, suffix=f".{ext}") as temp_file:
-            # 3. Descargamos la imagen de Cloudinary y la guardamos temporalmente
-            urllib.request.urlretrieve(image_url, temp_file.name)
-            temp_path = temp_file.name
+        # Si estamos en producción, la URL será de Cloudinary (http)
+        if hasattr(record.imagen, 'url') and record.imagen.url.startswith('http'):
+            # --- MODO PRODUCCIÓN (Cloudinary) ---
+            with tempfile.NamedTemporaryFile(delete=False, suffix=f".{ext}") as temp_file:
+                urllib.request.urlretrieve(record.imagen.url, temp_file.name)
+                temp_path = temp_file.name
+            
+            texto_ia, confianza = predict_bill(temp_path)
+            os.remove(temp_path)
 
-        # 4. Le pasamos la ruta del archivo temporal a la IA
-        texto_ia, confianza = predict_bill(temp_path)
-
-        # 5. Borramos el archivo temporal para no llenar el disco de Render
-        os.remove(temp_path)
+        else:
+            # --- MODO LOCAL (Disco duro de tu PC) ---
+            # Usamos la ruta directa del archivo que ya se guardó
+            texto_ia, confianza = predict_bill(record.imagen.path)
 
     except Exception as e:
         logger.exception("Error al predecir el billete")
-        print(f"ERROR EXACTO DE LA IA: {str(e)}") # Esto saldrá en los logs de Render
+        print(f"ERROR EXACTO DE LA IA: {str(e)}")
         record.delete()
         return JsonResponse({'error': 'No se pudo procesar la imagen'}, status=500)
     # ==========================================
@@ -153,7 +152,7 @@ def upload_and_detect(request):
 
 
 # ==========================================
-# 4. RESULTADO (Enviamos el perfil)
+# 4. RESULTADO
 # ==========================================
 def mostrar_resultado(request, record_id):
     perfil = getattr(request.user, 'perfil', None) if request.user.is_authenticated else None
@@ -162,7 +161,7 @@ def mostrar_resultado(request, record_id):
 
 
 # ==========================================
-# 5. OTRAS PANTALLAS (Enviamos el perfil)
+# 5. OTRAS PANTALLAS
 # ==========================================
 def historial(request):
     perfil = getattr(request.user, 'perfil', None) if request.user.is_authenticated else None
@@ -201,13 +200,10 @@ def estadisticas(request):
         'values': [d['total'] for d in distribucion],
     }
 
-    # --- NUEVAS ESTADÍSTICAS DE CALIDAD ---
     total_rotos = registros.filter(roto=True).count()
     total_doblados = registros.filter(doblado=True).count()
     total_arrugados = registros.filter(arrugado=True).count()
-    total_buenos = registros.filter(
-        roto=False, doblado=False, arrugado=False
-    ).count()
+    total_buenos = registros.filter(roto=False, doblado=False, arrugado=False).count()
 
     context = {
         'total_detecciones': total_detecciones,
@@ -215,7 +211,6 @@ def estadisticas(request):
         'porcentaje_top': porcentaje_top,
         'datos_grafico': datos_grafico,
         'perfil': perfil,
-        # Calidad
         'total_rotos': total_rotos,
         'total_doblados': total_doblados,
         'total_arrugados': total_arrugados,
@@ -229,7 +224,6 @@ def instrucciones(request):
     return render(request, 'detector/instrucciones.html', {'perfil': perfil})
 
 
-# 👇 VISTA DE CONFIGURACIÓN ACTUALIZADA PARA LA FOTO
 @login_required
 def configuracion(request):
     perfil, created = Perfil.objects.get_or_create(usuario=request.user)
@@ -272,7 +266,6 @@ class RegistroView(generic.CreateView):
         respuesta = super().form_valid(form)
         login(self.request, self.object)
 
-        # Creamos el perfil vacío
         Perfil.objects.create(usuario=self.object)
 
         return respuesta
@@ -284,11 +277,6 @@ class RegistroView(generic.CreateView):
 @require_POST
 def borrar_historial(request):
     if request.method == 'POST':
-        # Borra todos los registros de la base de datos
         DetectionRecord.objects.all().delete()
-        
-        # Envía mensaje de éxito
         messages.success(request, '¡Historial borrado con éxito!')
-        
-        # Redirige de vuelta a configuración
         return redirect('configuracion')

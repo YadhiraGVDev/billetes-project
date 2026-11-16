@@ -1,0 +1,6 @@
+0 Class 20
+1 Class 50
+2 Class 100
+3 Class 200
+4 Class 500
+5 Class nada

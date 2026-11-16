@@ -1,4 +1,3 @@
-
 """
 Django settings for mysite project.
 """
@@ -141,46 +140,52 @@ AUTH_PASSWORD_VALIDATORS = [
 # =========================================
 
 LANGUAGE_CODE = 'es-mx'
-
 TIME_ZONE = 'America/Mexico_City'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
 # =========================================
-# ARCHIVOS ESTÁTICOS
+# ARCHIVOS ESTÁTICOS Y MULTIMEDIA (LÓGICA LOCAL/PRODUCCIÓN)
 # =========================================
 
 STATIC_URL = '/static/'
-
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STORAGES = {
-    'default': {
-        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
-    },
-    'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-    },
-}
+# Detectar si estamos en Render o en Local
+IS_RENDER = 'RENDER' in os.environ
 
-
-# =========================================
-# ARCHIVOS MULTIMEDIA
-# =========================================
-
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = BASE_DIR / 'media'
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-
+if IS_RENDER:
+    # PRODUCCIÓN (Render con Cloudinary)
+    STORAGES = {
+        'default': {
+            'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+        },
+        'staticfiles': {
+            'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        },
+    }
+    
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    }
+    
+    MEDIA_URL = '/media/'
+else:
+    # DESARROLLO LOCAL (Tu PC)
+    STORAGES = {
+        'default': {
+            'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        },
+        'staticfiles': {
+            'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        },
+    }
+    
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # =========================================
@@ -188,7 +193,6 @@ CLOUDINARY_STORAGE = {
 # =========================================
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
-
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 
 
@@ -197,9 +201,7 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 # =========================================
 
 LOGIN_URL = '/login/'
-
 LOGIN_REDIRECT_URL = '/home/'
-
 LOGOUT_REDIRECT_URL = '/'
 
 
@@ -231,9 +233,7 @@ if not DEBUG:
         'HTTP_X_FORWARDED_PROTO',
         'https'
     )
-
     SESSION_COOKIE_SECURE = True
-
     CSRF_COOKIE_SECURE = True
 
 
