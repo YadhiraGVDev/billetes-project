@@ -23,7 +23,7 @@ class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(
         label='Nombre de usuario',
         max_length=150,
-        min_length=40,
+        min_length=1,
         validators=[
             RegexValidator(
                 regex=r'^[a-zA-Z0-9@.\/+\-_]+$',
@@ -32,7 +32,7 @@ class CustomUserCreationForm(UserCreationForm):
         ],
         help_text='',
         error_messages={
-            'min_length': 'El nombre de usuario debe tener al menos 40 caracteres.',
+            'min_length': 'El nombre de usuario debe tener al menos 1 carácter.',
             'max_length': 'El nombre de usuario no puede tener más de 150 caracteres.',
         }
     )
