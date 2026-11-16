@@ -2,10 +2,12 @@ import base64
 import json
 import logging
 import os
-import re  # 👈 NUEVO: Importado para las validaciones de caracteres
+import re
+import urllib.request  # 👈 NUEVO: Para descargar la imagen de Cloudinary
+import tempfile      # 👈 NUEVO: Para crear archivos temporales en Render
 
 from django.contrib.auth import logout, login
-from django.contrib import messages # 👈 NUEVO: Para los mensajes de éxito/error
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.files.base import ContentFile
@@ -108,14 +110,33 @@ def upload_and_detect(request):
     record.roto = calidad["roto"]
     record.puntaje_calidad = calidad["puntaje_calidad"]
     record.detalles_calidad = calidad["detalles"]
-    record.save()  # Necesario para tener .path
+    record.save()  # Necesario para tener la URL de Cloudinary (o local)
 
+    # ==========================================
+    # MODIFICACIÓN PARA CLOUDINARY EN RENDER
+    # ==========================================
     try:
-        texto_ia, confianza = predict_bill(record.imagen.path)
-    except Exception:
+        # 1. Obtenemos la URL (funciona en local y en producción con Cloudinary)
+        image_url = record.imagen.url
+        
+        # 2. Creamos un archivo temporal oculto
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f".{ext}") as temp_file:
+            # 3. Descargamos la imagen de Cloudinary y la guardamos temporalmente
+            urllib.request.urlretrieve(image_url, temp_file.name)
+            temp_path = temp_file.name
+
+        # 4. Le pasamos la ruta del archivo temporal a la IA
+        texto_ia, confianza = predict_bill(temp_path)
+
+        # 5. Borramos el archivo temporal para no llenar el disco de Render
+        os.remove(temp_path)
+
+    except Exception as e:
         logger.exception("Error al predecir el billete")
+        print(f"ERROR EXACTO DE LA IA: {str(e)}") # Esto saldrá en los logs de Render
         record.delete()
         return JsonResponse({'error': 'No se pudo procesar la imagen'}, status=500)
+    # ==========================================
 
     denominacion_limpia = (
         (texto_ia or "")
@@ -193,7 +214,7 @@ def estadisticas(request):
         'denominacion_top': denominacion_top,
         'porcentaje_top': porcentaje_top,
         'datos_grafico': datos_grafico,
-        'perfil': perfil,  # 👈 Enviamos perfil
+        'perfil': perfil,
         # Calidad
         'total_rotos': total_rotos,
         'total_doblados': total_doblados,
@@ -243,7 +264,7 @@ def cerrar_sesion_manual(request):
 
 
 class RegistroView(generic.CreateView):
-    form_class = CustomUserCreationForm  # 👈 Usamos el nuevo formulario
+    form_class = CustomUserCreationForm
     success_url = reverse_lazy('home')
     template_name = 'registration/registro.html'
 
@@ -258,7 +279,7 @@ class RegistroView(generic.CreateView):
 
 
 # ==========================================
-# 6. BORRAR HISTORIAL (¡NUEVO!)
+# 6. BORRAR HISTORIAL
 # ==========================================
 @require_POST
 def borrar_historial(request):
