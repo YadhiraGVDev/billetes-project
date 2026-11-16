@@ -113,7 +113,9 @@
 
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        const imageData = canvas.toDataURL("image/jpeg", 0.85);
+        // CAMBIO 1: Bajamos la calidad a 0.7 para que pese menos y no sature el localStorage en móviles
+        const imageData = canvas.toDataURL("image/jpeg", 0.7);
+        
         guardarYIrAPreview(imageData);
     });
 
@@ -143,10 +145,15 @@
     function guardarYIrAPreview(base64Image) {
         try {
             localStorage.setItem("fotoBillete", base64Image);
-            window.location.href = "/preview/";
+            
+            // CAMBIO 2: Usamos una ruta relativa simple. 
+            // Si tu URL en Django es '/preview/', esto funcionará perfecto.
+            window.location.href = "/preview/"; 
+            
         } catch (error) {
             console.error("Error al guardar fotografía:", error);
-            alert("No se pudo guardar la fotografía. Intenta utilizar una imagen más pequeña.");
+            // Este error suele pasar si la foto es muy grande para el almacenamiento del móvil
+            alert("La fotografía es muy pesada para procesarla. Intenta de nuevo o usa la galería.");
         }
     }
 
