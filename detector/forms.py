@@ -1,37 +1,42 @@
-﻿from django import forms
+
+from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from .models import Perfil
 
-# Tu formulario que ya tenÃ­as
+
+# Formulario de perfil
 class PerfilForm(forms.ModelForm):
     class Meta:
         model = Perfil
         fields = ['foto']
         widgets = {
-            'foto': forms.FileInput(attrs={'style': 'width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ccc;'})
+            'foto': forms.FileInput(attrs={
+                'style': 'width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ccc;'
+            })
         }
 
-# ðŸ‘‡ EL NUEVO FORMULARIO QUE VALIDA LOS 40 CARACTERES
+
+# Formulario de registro de usuarios
 class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(
+        label='Nombre de usuario',
         max_length=150,
-        min_length=1, # ðŸ‘ˆ AQUÃ ESTÃ LA REGLA
+        min_length=40,
         validators=[
             RegexValidator(
                 regex=r'^[a-zA-Z0-9@.\/+\-_]+$',
-                message='Solo se permiten letras, nÃºmeros y los caracteres @ . / + - _'
+                message='Solo se permiten letras, números y los caracteres @ . / + - _.'
             )
         ],
-        help_text='Obligatorio. MÃ­nimo 40 caracteres, mÃ¡ximo 150. Letras, dÃ­gitos y @/./+/-/_ Ãºnicamente.',
+        help_text='',
         error_messages={
-            'min_length': 'El nombre de usuario debe tener al menos 1 carácter.',
-            'max_length': 'El nombre de usuario no puede tener mÃ¡s de 150 caracteres.',
+            'min_length': 'El nombre de usuario debe tener al menos 40 caracteres.',
+            'max_length': 'El nombre de usuario no puede tener más de 150 caracteres.',
         }
     )
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("username",)
-
+        fields = ('username',)
