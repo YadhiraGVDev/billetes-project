@@ -1,69 +1,166 @@
-
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .about-page {
+        padding: 0 12px 15px;
+        margin: 0;
+    }
+
+    .about-header {
+        background: #0b3b60;
+        color: white;
+        padding: 12px 16px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 14px;
+    }
+
+    .about-header h5 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    .about-intro {
+        text-align: center;
+        margin: 5px 0 14px;
+    }
+
+    /* CONTENEDOR CIRCULAR PARA EL NUEVO LOGO */
+    .about-icon {
+        width: 80px; /* Un poco más grande para que luzca el ícono */
+        height: 80px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #e5eff8;
+        border-radius: 50%;
+        margin-bottom: 10px;
+        overflow: hidden;
+        padding: 15px; /* Deja un margen interno para que el ícono respire */
+    }
+
+    .about-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Muestra el ícono completo sin recortarlo */
+    }
+
+    .about-intro h3 {
+        color: #0b3b60;
+        font-size: 21px;
+        margin: 0;
+    }
+
+    .about-intro p {
+        margin: 2px 0 0;
+        font-size: 13px;
+    }
+
+    .about-card {
+        border-radius: 13px;
+        border: 1px solid #e1e7ed;
+        background: white;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+
+    .about-card-body {
+        padding: 16px;
+    }
+
+    .about-card h5 {
+        color: #0b3b60;
+        font-weight: bold;
+        margin: 0 0 13px;
+        font-size: 17px;
+    }
+
+    .about-item {
+        margin-bottom: 12px;
+    }
+
+    .about-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .about-item strong {
+        color: #333;
+        font-size: 14px;
+    }
+
+    .about-item p {
+        color: #6c757d;
+        font-size: 13px;
+        margin: 2px 0 0;
+        line-height: 1.4;
+    }
+
+    @media (min-width: 768px) {
+        .about-page {
+            padding: 0 18px 15px;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 
-<div class="header-azul d-flex align-items-center px-3">
-    <a href="{% url 'configuracion' %}" class="text-white text-decoration-none">
-        <i class="bi bi-arrow-left me-3 fs-5"></i>
-    </a>
-    <h5 class="mb-0 mx-auto">Acerca de</h5>
-</div>
+<div class="about-page">
 
-<div class="w-100 px-3 px-md-4 py-3 fade-in">
-
-    <div class="text-center mb-3">
-        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-2"
-             style="width: 85px; height: 85px;">
-            <i class="bi bi-camera" style="font-size: 2.8rem;"></i>
-        </div>
-
-        <h3 class="fw-bold mb-1" style="color: #0b3b60;">
-            UAEM-bench
-        </h3>
-
-        <p class="text-muted mb-0">Versión 1.0.0</p>
+    <div class="about-header">
+        <a href="{% url 'configuracion' %}"
+           class="text-white text-decoration-none me-3">
+            <i class="bi bi-arrow-left fs-5"></i>
+        </a>
+        <h5>Acerca de</h5>
     </div>
 
-    <div class="card border shadow-sm w-100">
-        <div class="card-body p-3 p-md-4">
+    <div class="about-intro">
 
-            <h5 class="fw-bold mb-3" style="color: #0b3b60;">
-                Información del proyecto
-            </h5>
-
-            <div class="row g-3">
-
-                <div class="col-12 col-md-6">
-                    <strong>Desarrollado por:</strong>
-                    <p class="text-muted mb-0">
-                        Gonzalez Velazquez Yadhira
-                    </p>
-                </div>
-
-                <div class="col-12 col-md-6">
-                    <strong>Institución:</strong>
-                    <p class="text-muted mb-0">
-                        Universidad Autónoma del Estado de México - CU Nezahualcóyotl
-                    </p>
-                </div>
-
-                <div class="col-12 col-md-6">
-                    <strong>Carrera:</strong>
-                    <p class="text-muted mb-0">
-                        Ingeniería en Sistemas Inteligentes
-                    </p>
-                </div>
-
-                <div class="col-12">
-                    <strong>Descripción:</strong>
-                    <p class="text-muted mb-0">
-                        Sistema web para la detección de la denominación de billetes mexicanos y análisis preliminar de elementos de seguridad mediante visión por computadora.
-                    </p>
-                </div>
-
-            </div>
+        <div class="about-icon">
+            <img src="{% static 'detector/img/logo.png' %}" alt="Logo UAEM-bench">
         </div>
+
+        <h3>UAEM-bench</h3>
+        <p class="text-muted">Versión 1.0.0</p>
+
+    </div>
+
+    <div class="about-card">
+
+        <div class="about-card-body">
+
+            <h5>Información del proyecto</h5>
+
+            <div class="about-item">
+                <strong>Desarrollado por:</strong>
+                <p>Gonzalez Velazquez Yadhira</p>
+            </div>
+
+            <div class="about-item">
+                <strong>Institución:</strong>
+                <p>Universidad Autónoma del Estado de México - CU Nezahualcóyotl</p>
+            </div>
+
+            <div class="about-item">
+                <strong>Carrera:</strong>
+                <p>Ingeniería en Sistemas Inteligentes</p>
+            </div>
+
+            <div class="about-item">
+                <strong>Descripción:</strong>
+                <p>
+                    Sistema web para la detección de la denominación de
+                    billetes mexicanos y análisis preliminar de elementos
+                    de seguridad mediante visión por computadora.
+                </p>
+            </div>
+
+        </div>
+
     </div>
 
 </div>
