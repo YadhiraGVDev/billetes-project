@@ -59,9 +59,8 @@
         </div>
 
         <!-- Botones de Acción -->
-        <button class="btn-details">Ver detalles</button>
-        
-        <a href="{% url 'upload' %}" class="btn-analyze-again">
+              <a href="{% url 'detalles' registro.id %}" class="btn-details" style="display: block; text-align: center; text-decoration: none;">Ver detalles</a>
+  <a href="{% url 'upload' %}" class="btn-analyze-again">
             <i class="fa-solid fa-camera"></i> Analizar otro billete
         </a>
     </div>

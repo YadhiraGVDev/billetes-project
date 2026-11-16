@@ -12,9 +12,9 @@ try:
     interpreter.allocate_tensors()
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
-    print("✅ Modelo TFLite cargado correctamente.")
+    print("Modelo TFLite cargado correctamente.")
 except Exception as e:
-    print(f"❌ Error al cargar el modelo TFLite: {e}")
+    print(f"Error al cargar el modelo TFLite: {e}")
     interpreter = None
 
 CLASS_NAMES = []
@@ -26,14 +26,11 @@ if os.path.exists(LABELS_PATH):
 if not CLASS_NAMES:
     CLASS_NAMES = ['20', '50', '100', '200', '500', '1000']
 
-print(f"Clases detectadas: {CLASS_NAMES}")
-
 def predict_bill(image_path):
     if interpreter is None:
         return "Error: Modelo no cargado", 0.0
 
     try:
-        # Abrir imagen y forzar RGB
         img = Image.open(image_path)
         if img.mode in ("RGBA", "P"):
             img = img.convert("RGB")
@@ -43,28 +40,27 @@ def predict_bill(image_path):
 
         img = img.resize((224, 224)) 
         
-        # Obtener el tipo de dato que espera el modelo (UINT8 o FLOAT32)
         input_dtype = input_details[0]['dtype']
-        
         if input_dtype == np.uint8:
-            # Si el modelo espera enteros (0-255)
             img_array = np.array(img, dtype=np.uint8)
         else:
-            # Si el modelo espera decimales (0.0 - 1.0)
             img_array = np.array(img, dtype=np.float32) / 255.0
             
         img_array = np.expand_dims(img_array, axis=0)
 
-        # Predecir
         interpreter.set_tensor(input_details[0]['index'], img_array)
         interpreter.invoke()
         predictions = interpreter.get_tensor(output_details[0]['index'])
         
         predicted_class_index = np.argmax(predictions[0])
-        confidence = float(np.max(predictions[0])) * 100
-
-        if confidence < 50.0:
-            return "No reconocido", round(confidence, 1)
+        
+        # Calcular la confianza (siempre multiplicar por 100)
+        raw_confidence = float(np.max(predictions[0]))
+        confidence = raw_confidence * 100
+        
+        # Asegurarnos de que no pase de 100
+        if confidence > 100:
+            confidence = 100.0
 
         denominacion = CLASS_NAMES[predicted_class_index]
         denominacion = "".join(c for c in denominacion if c.isdigit())
@@ -73,8 +69,6 @@ def predict_bill(image_path):
 
     except Exception as e:
         import traceback
-        print("=========================================")
-        print(f"❌ ERROR DETALLADO EN PREDICCIÓN:")
+        print("Error en la predicción:")
         traceback.print_exc()
-        print("=========================================")
         return "Error al procesar", 0.0

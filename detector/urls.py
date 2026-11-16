@@ -16,7 +16,7 @@ urlpatterns = [
 
     # Resultado de la detección
     path('resultado/<int:record_id>/', views.mostrar_resultado, name='resultado'),
-
+    path('detalles/<int:record_id>/', views.detalles_billete, name='detalles'),
     # Otras pantallas
     path('historial/', views.historial, name='historial'),
     path('estadisticas/', views.estadisticas, name='estadisticas'),

@@ -280,3 +280,17 @@ def borrar_historial(request):
         DetectionRecord.objects.all().delete()
         messages.success(request, '¡Historial borrado con éxito!')
         return redirect('configuracion')
+
+# ==========================================
+# 7. DETALLES DEL BILLETE
+# ==========================================
+def detalles_billete(request, record_id):
+    perfil = getattr(request.user, 'perfil', None) if request.user.is_authenticated else None
+    registro = get_object_or_404(DetectionRecord, id=record_id)
+    
+    return render(request, 'detector/detalles.html', {
+        'registro': registro, 
+        'perfil': perfil
+    })
+
+

@@ -1,0 +1,62 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+
+{% block header_title %}Detalles del Análisis{% endblock %}
+{% block header_subtitle %}Información completa del billete{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'detector/css/result.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="result-container fade-in">
+    
+    <div class="result-card">
+        {% if registro.imagen %}
+            <div class="result-image-container">
+                <img src="{{ registro.imagen.url }}" alt="Billete analizado">
+            </div>
+        {% endif %}
+
+        <div class="denomination-box">
+            <h2>{{ registro.denominacion_detectada|default:"No detectado" }}</h2>
+            <p>Análisis del billete</p>
+        </div>
+
+        <div class="info-grid" style="grid-template-columns: 1fr;">
+            <div class="info-box">
+                <span class="info-label">Puntaje de Calidad</span>
+                <span class="info-value">{{ registro.puntaje_calidad|floatformat:0 }}/100</span>
+            </div>
+            <div class="info-box">
+                <span class="info-label">Estado físico</span>
+                <span class="info-value">
+                    {% if registro.roto %} ❌ Roto
+                    {% elif registro.doblado and registro.arrugado %} ⚠️ Doblado y arrugado
+                    {% elif registro.doblado %} ⚠️ Doblado
+                    {% elif registro.arrugado %} ⚠️ Arrugado
+                    {% else %} ✅ En buen estado
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div style="padding: 15px; background: var(--bg-app); border-radius: 10px; margin-top: 15px;">
+            <h4 style="margin-top: 0; color: var(--text-main);">Detalles técnicos:</h4>
+            <ul style="margin-bottom: 0; padding-left: 20px; color: var(--text-muted);">
+                {% for detalle in registro.detalles_calidad %}
+                    <li>{{ detalle }}</li>
+                {% empty %}
+                    <li>No hay detalles adicionales registrados.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <a href="{% url 'resultado' registro.id %}" class="btn-analyze-again" style="margin-top: 20px; display: block; text-align: center;">
+            <i class="fa-solid fa-arrow-left"></i> Volver al resultado
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %}

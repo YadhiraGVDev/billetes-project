@@ -67,3 +67,73 @@ input, select, textarea {
 [data-theme="dark"] a > div p {
     color: #b0b0b0 !important; /* Un gris claro para los subtítulos */
 }
+
+/* ========================================== */
+/* FIX PARA LA PANTALLA DE RESULTADOS EN OSCURO */
+/* ========================================== */
+
+[data-theme="dark"] .result-card {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .denomination-box h2,
+[data-theme="dark"] .denomination-box p,
+[data-theme="dark"] .info-value,
+[data-theme="dark"] .info-label,
+[data-theme="dark"] .date-box,
+[data-theme="dark"] .success-banner span {
+    color: var(--text-main) !important;
+}
+
+[data-theme="dark"] .info-box {
+    background-color: var(--bg-app) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .date-box {
+    background-color: var(--bg-app) !important;
+}
+
+[data-theme="dark"] .success-text {
+    color: #4ade80 !important; /* Verde más brillante para fondo oscuro */
+}
+
+[data-theme="dark"] .btn-analyze-again {
+    background-color: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+}
+/* FIX PARA LA PANTALLA DE RESULTADOS EN OSCURO */
+[data-theme="dark"] .result-card {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .denomination-box h2,
+[data-theme="dark"] .denomination-box p,
+[data-theme="dark"] .info-value,
+[data-theme="dark"] .info-label,
+[data-theme="dark"] .date-box,
+[data-theme="dark"] .success-banner span {
+    color: var(--text-main) !important;
+}
+
+[data-theme="dark"] .info-box {
+    background-color: var(--bg-app) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .date-box {
+    background-color: var(--bg-app) !important;
+}
+
+[data-theme="dark"] .success-text {
+    color: #4ade80 !important; 
+}
+
+[data-theme="dark"] .btn-analyze-again {
+    background-color: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+}
