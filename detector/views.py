@@ -5,6 +5,7 @@ import os
 import re  # 👈 NUEVO: Importado para las validaciones de caracteres
 
 from django.contrib.auth import logout, login
+from django.contrib import messages # 👈 NUEVO: Para los mensajes de éxito/error
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.files.base import ContentFile
@@ -254,3 +255,19 @@ class RegistroView(generic.CreateView):
         Perfil.objects.create(usuario=self.object)
 
         return respuesta
+
+
+# ==========================================
+# 6. BORRAR HISTORIAL (¡NUEVO!)
+# ==========================================
+@require_POST
+def borrar_historial(request):
+    if request.method == 'POST':
+        # Borra todos los registros de la base de datos
+        DetectionRecord.objects.all().delete()
+        
+        # Envía mensaje de éxito
+        messages.success(request, '¡Historial borrado con éxito!')
+        
+        # Redirige de vuelta a configuración
+        return redirect('configuracion')

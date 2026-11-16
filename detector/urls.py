@@ -28,7 +28,7 @@ urlpatterns = [
     path('instrucciones/', views.instrucciones, name='instrucciones'),
     path('configuracion/', views.configuracion, name='configuracion'),
     path('acerca-de/', views.acerca_de, name='acerca_de'),
-
+path('configuracion/borrar-historial/', views.borrar_historial, name='borrar_historial'),
     # Cerrar sesión
     path('logout/', views.cerrar_sesion_manual, name='logout'),
 ]

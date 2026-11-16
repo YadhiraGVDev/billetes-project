@@ -5,13 +5,60 @@
 {% block header_subtitle %}Ajustes de la aplicación{% endblock %}
 
 {% block content %}
+<!-- ESTILOS PARA EL MODO OSCURO (Forzados aquí para que funcionen) -->
+<style>
+    :root {
+        --bg-main: #f4f6f9;
+        --text-main: #333;
+        --bg-card: #ffffff;
+        --border-card: #eee;
+        --text-muted: #666;
+    }
+
+    [data-theme="dark"] {
+        --bg-main: #121212;
+        --text-main: #e0e0e0;
+        --bg-card: #1e1e1e;
+        --border-card: #333;
+        --text-muted: #a0a0a0;
+    }
+
+    body {
+        background-color: var(--bg-main) !important;
+        color: var(--text-main) !important;
+        transition: background 0.3s, color 0.3s;
+    }
+
+    /* Forzar el cambio de color en las tarjetas de configuración */
+    .fade-in > div, 
+    .settings-group,
+    .settings-item {
+        background-color: var(--bg-card) !important;
+        border-color: var(--border-card) !important;
+        color: var(--text-main) !important;
+    }
+
+    .settings-text h3, h3, h4 {
+        color: var(--text-main) !important;
+    }
+    
+    .settings-text p, p {
+        color: var(--text-muted) !important;
+    }
+</style>
+
 <div class="fade-in">
 
-    <!-- ========================================== -->
-    <!-- NUEVA SECCIÓN: PERFIL DE USUARIO           -->
-    <!-- ========================================== -->
-    <div style="text-align: center; margin-bottom: 30px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee;">
-        <!-- Foto actual o ícono por defecto -->
+    {% if messages %}
+        {% for message in messages %}
+            <div style="background: #dcfce7; color: #166534; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; font-weight: bold; text-align: center; border: 1px solid #bbf7d0;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- PERFIL DE USUARIO -->
+    <div style="text-align: center; margin-bottom: 30px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-card);">
         {% if perfil.foto %}
             <img src="{{ perfil.foto.url }}" alt="Foto de perfil" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #0b3d6b; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
         {% else %}
@@ -20,10 +67,9 @@
             </div>
         {% endif %}
         
-        <h3 style="margin: 0; font-size: 18px; color: #333;">{{ request.user.username }}</h3>
-        <p style="margin: 5px 0 15px 0; font-size: 12px; color: #666;">Miembro de UAEM-bench</p>
+        <h3 style="margin: 0; font-size: 18px;">{{ request.user.username }}</h3>
+        <p style="margin: 5px 0 15px 0; font-size: 12px;">Miembro de UAEM-bench</p>
 
-        <!-- Formulario para subir foto -->
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div style="margin-bottom: 10px; text-align: left;">
@@ -34,13 +80,12 @@
             </button>
         </form>
     </div>
-    <!-- ========================================== -->
 
-    <!-- Sección: Preferencias -->
+    <!-- PREFERENCIAS -->
     <h4 style="color: var(--azul-uaem); margin-bottom: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Preferencias</h4>
 
     <div class="settings-group">
-        <!-- Opción 1 -->
+        <!-- Notificaciones -->
         <div class="settings-item">
             <div class="settings-icon" style="background: #e0f2fe; color: #0284c7;">
                 <i class="fa-solid fa-bell"></i>
@@ -55,43 +100,46 @@
             </label>
         </div>
 
-        <!-- Opción 2 -->
+        <!-- TEMA CLARO/OSCURO -->
         <div class="settings-item">
-            <div class="settings-icon" style="background: #dcfce7; color: #16a34a;">
-                <i class="fa-solid fa-wifi"></i>
+            <div class="settings-icon" style="background: #f3e8ff; color: #9333ea;">
+                <i class="fa-solid fa-moon"></i>
             </div>
             <div class="settings-text">
-                <h3>Usar solo Wi-Fi</h3>
-                <p>Para sincronizar historial</p>
+                <h3>Tema de la app</h3>
+                <p>Elige modo claro u oscuro</p>
             </div>
-            <label class="switch">
-                <input type="checkbox">
-                <span class="slider round"></span>
-            </label>
+            <select id="themeSelector" onchange="cambiarTema(this.value)" style="padding: 8px; border-radius: 8px; border: 1px solid var(--border-card); background: var(--bg-card); color: var(--text-main); font-size: 14px;">
+                <option value="light">Claro</option>
+                <option value="dark">Oscuro</option>
+            </select>
         </div>
     </div>
 
-    <!-- Sección: Cuenta y Datos -->
+    <!-- DATOS -->
     <h4 style="color: var(--azul-uaem); margin: 25px 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Datos</h4>
 
     <div class="settings-group">
-        <a href="#" class="settings-item" style="text-decoration: none; color: inherit;">
-            <div class="settings-icon" style="background: #fef3c7; color: #d97706;">
-                <i class="fa-solid fa-database"></i>
-            </div>
-            <div class="settings-text">
-                <h3>Borrar historial</h3>
-                <p>Eliminar todos los análisis guardados</p>
-            </div>
-            <i class="fa-solid fa-chevron-right" style="color: #ccc;"></i>
-        </a>
+        <form action="{% url 'borrar_historial' %}" method="POST" id="formBorrarHistorial" style="margin: 0;">
+            {% csrf_token %}
+            <button type="submit" class="settings-item" style="width: 100%; border: none; text-align: left; cursor: pointer; padding: 15px; display: flex; align-items: center; font-family: inherit;">
+                <div class="settings-icon" style="background: #fef3c7; color: #d97706;">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <div class="settings-text" style="flex-grow: 1;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: bold;">Borrar historial</h3>
+                    <p style="margin: 2px 0 0 0; font-size: 13px;">Eliminar todos los análisis guardados</p>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: #ccc;"></i>
+            </button>
+        </form>
     </div>
 
-    <!-- Sección: Información -->
+    <!-- INFORMACIÓN -->
     <h4 style="color: var(--azul-uaem); margin: 25px 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Información</h4>
 
     <div class="settings-group">
-        <a href="{% url 'acerca_de' %}" class="settings-item" style="text-decoration: none; color: inherit;">
+        <a href="{% url 'acerca_de' %}" class="settings-item" style="text-decoration: none;">
             <div class="settings-icon" style="background: #f3e8ff; color: #9333ea;">
                 <i class="fa-solid fa-circle-info"></i>
             </div>
@@ -103,7 +151,7 @@
         </a>
     </div>
 
-    <!-- ✅ Botón de Cerrar Sesión (Ahora vive solo aquí) -->
+    <!-- CERRAR SESIÓN -->
     <div style="padding: 20px; margin-top: 30px;">
         <form action="{% url 'logout' %}" method="post" style="margin: 0;">
             {% csrf_token %}
@@ -119,4 +167,26 @@
     </div>
 
 </div>
+
+<script>
+    // Forzar la carga del tema al abrir la página
+    document.addEventListener("DOMContentLoaded", function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('themeSelector').value = savedTheme;
+    });
+
+    // Cambiar tema
+    function cambiarTema(tema) {
+        document.documentElement.setAttribute('data-theme', tema);
+        localStorage.setItem('theme', tema);
+    }
+
+    // Confirmación de borrado
+    document.getElementById('formBorrarHistorial').addEventListener('submit', function(e) {
+        if (!confirm('¿Estás seguro de que deseas borrar todo tu historial?')) {
+            e.preventDefault();
+        }
+    });
+</script>
 {% endblock %}
