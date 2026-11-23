@@ -132,4 +132,5 @@ Gonzalez Velazquez Yadhira
 
 ## Licencia
 
-Proyecto desarrollado con fines académicos y educativos.
+Este proyecto está bajo la licencia MIT.
+Consulta el archivo [LICENSE](LICENSE) para conocer los términos y condiciones.
