@@ -20,7 +20,7 @@
 .stat-card h3 {
     margin: 0 0 10px 0;
     font-size: 14px;
-    color: var(--azul-uaem);
+    color: var(--color-olive);
     font-weight: 600;
 }
 
@@ -77,7 +77,7 @@
 .top-bill-info h2 {
     margin: 0;
     font-size: 22px;
-    color: var(--azul-uaem);
+    color: var(--color-olive);
 }
 .top-bill-info p {
     margin: 2px 0 8px 0;
@@ -93,7 +93,7 @@
 }
 .progress-bar-fill {
     height: 100%;
-    background: var(--azul-uaem);
+    background: var(--color-olive);
     border-radius: 3px;
 }
 

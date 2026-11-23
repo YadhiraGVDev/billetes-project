@@ -29,7 +29,7 @@
 .step-circle {
     width: 40px;
     height: 40px;
-    background-color: #2563eb; /* Azul brillante de tu diseño */
+    background-color: #556B2F; /* Azul brillante de tu diseño */
     color: white;
     border-radius: 50%;
     display: flex;
@@ -38,7 +38,7 @@
     font-weight: bold;
     font-size: 18px;
     flex-shrink: 0;
-    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3); /* Sombra azul */
+    box-shadow: 0 4px 6px rgba(85, 107, 47, 0.3); /* Sombra azul */
     z-index: 2;
 }
 
@@ -46,7 +46,7 @@
 .step-line {
     width: 2px;
     flex-grow: 1;
-    border-left: 2px dashed #93c5fd; /* Azul claro punteado */
+    border-left: 2px dashed #D4AF37; /* Azul claro punteado */
     margin: 5px 0;
     min-height: 40px;
 }
@@ -63,14 +63,14 @@
     gap: 8px;
     font-size: 15px;
     font-weight: 700;
-    color: #1e40af; /* Azul oscuro */
+    color: #3F5125; /* Azul oscuro */
     margin-bottom: 5px;
 }
 
 /* El diamante azul pequeño */
 .step-title i.fa-diamond {
     font-size: 10px;
-    color: #2563eb;
+    color: #556B2F;
 }
 
 .step-content p {
@@ -84,7 +84,7 @@
    Caja de Consejos
    ========================================= */
 .tips-box {
-    background-color: #e0f2fe; /* Fondo celeste suave */
+    background-color: #F5F3E8; /* Fondo celeste suave */
     border-radius: 12px;
     padding: 15px;
     margin-top: 10px;
@@ -95,7 +95,7 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 10px;
-    color: #1e40af;
+    color: #3F5125;
 }
 
 .tips-header i {

@@ -1,65 +1,98 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Recuperar los datos que enviamos desde Django
-    const datosJSON = document.getElementById('datos-grafico').textContent;
-    const datos = JSON.parse(datosJSON);
+    const elementoDatos = document.getElementById("datos-grafico");
+    const canvas = document.getElementById("donutChart");
+    const legendContainer = document.getElementById("chart-legend");
 
-    const canvas = document.getElementById('donutChart');
-    const legendContainer = document.getElementById('chart-legend');
-
-    // Si no hay datos, mostramos un mensaje
-    if (datos.length === 0) {
-        canvas.parentElement.innerHTML = '<p style="text-align:center; font-size:12px; color:#94a3b8; margin-top:40px;">Sin datos aún</p>';
+    if (!elementoDatos || !canvas || !legendContainer) {
+        console.error("No se encontraron los elementos de la gráfica.");
         return;
     }
 
-    // 2. Preparar arrays para Chart.js
+    const datos = JSON.parse(elementoDatos.textContent);
+
+    if (!datos || datos.length === 0) {
+        canvas.parentElement.innerHTML =
+            '<p style="text-align:center; color:#94a3b8;">Sin datos aún</p>';
+        legendContainer.innerHTML = "";
+        return;
+    }
+
+    const coloresPorDenominacion = {
+        20: "#3685A8",
+        50: "#A34D9B",
+        100: "#D65345",
+        200: "#548A50",
+        500: "#3479B9",
+        1000: "#73717D"
+    };
+
+    function obtenerColor(nombre) {
+        const denominacion = Number(
+            String(nombre).replace(/[^\d]/g, "")
+        );
+
+        return coloresPorDenominacion[denominacion] || "#9CA3AF";
+    }
+
     const labels = datos.map(item => item.nombre);
-    const values = datos.map(item => item.total);
-    const percentages = datos.map(item => item.porcentaje);
+    const values = datos.map(item => Number(item.total));
+    const colores = datos.map(item => obtenerColor(item.nombre));
 
-    // Paleta de colores (Azul, Verde, Rojo, Morado, Naranja, etc.)
-    const colores = ['#0b3b60', '#10b981', '#8b5cf6', '#ef4444', '#f59e0b', '#06b6d4'];
-
-    // 3. Crear el gráfico de Dona
     new Chart(canvas, {
-        type: 'doughnut',
+        type: "pie",
         data: {
             labels: labels,
             datasets: [{
                 data: values,
                 backgroundColor: colores,
-                borderWidth: 2,
-                borderColor: '#ffffff',
-                hoverOffset: 4
+                borderColor: "#FFFFFF",
+                borderWidth: 3,
+                hoverOffset: 10
             }]
         },
         options: {
-            cutout: '70%', // Hace el hueco del centro (70%)
-            plugins: {
-                legend: { display: false } // Ocultamos la leyenda por defecto (usaremos la nuestra)
-            },
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const item = datos[context.dataIndex];
+                            return ` ${item.nombre}: ${item.total} billetes (${item.porcentaje}%)`;
+                        }
+                    }
+                }
+            }
         }
     });
 
-    // 4. Llenar la leyenda personalizada (al lado del gráfico)
-    legendContainer.innerHTML = ''; // Limpiar
-    
-    datos.forEach((item, index) => {
-        const li = document.createElement('li');
-        
-        // Asignamos un color (si hay más de 6, repetimos la paleta)
-        const color = colores[index % colores.length]; 
+    legendContainer.innerHTML = "";
 
-        li.innerHTML = `
-            <div class="legend-left">
-                <span class="legend-color" style="background-color: ${color};"></span>
-                <span>${item.nombre}</span>
-            </div>
-            <span class="legend-percent">${item.porcentaje}%</span>
-        `;
-        
+    datos.forEach((item, index) => {
+        const li = document.createElement("li");
+        const ladoIzquierdo = document.createElement("div");
+        ladoIzquierdo.className = "legend-left";
+
+        const indicador = document.createElement("span");
+        indicador.className = "legend-color";
+        indicador.style.backgroundColor = colores[index];
+
+        const nombre = document.createElement("span");
+        nombre.textContent = item.nombre;
+
+        const porcentaje = document.createElement("span");
+        porcentaje.className = "legend-percent";
+        porcentaje.textContent = `${item.porcentaje}%`;
+
+        ladoIzquierdo.appendChild(indicador);
+        ladoIzquierdo.appendChild(nombre);
+
+        li.appendChild(ladoIzquierdo);
+        li.appendChild(porcentaje);
+
         legendContainer.appendChild(li);
     });
 });

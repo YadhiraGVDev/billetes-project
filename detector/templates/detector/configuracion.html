@@ -47,7 +47,7 @@
     }
 </style>
 
-<div class="fade-in">
+<div class="fade-in uaem-watermark">
 
     {% if messages %}
         {% for message in messages %}
@@ -60,9 +60,9 @@
     <!-- PERFIL DE USUARIO -->
     <div style="text-align: center; margin-bottom: 30px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-card);">
         {% if perfil.foto %}
-            <img src="{{ perfil.foto.url }}" alt="Foto de perfil" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #0b3d6b; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <img src="{{ perfil.foto.url }}" alt="Foto de perfil" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #556B2F; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
         {% else %}
-            <div style="width: 100px; height: 100px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; justify-content: center; align-items: center; margin: 0 auto 10px auto; font-size: 40px; border: 3px solid #0b3d6b;">
+            <div style="width: 100px; height: 100px; border-radius: 50%; background: #F5F3E8; color: #3F5125; display: flex; justify-content: center; align-items: center; margin: 0 auto 10px auto; font-size: 40px; border: 3px solid #556B2F;">
                 <i class="fa-solid fa-user"></i>
             </div>
         {% endif %}
@@ -75,19 +75,19 @@
             <div style="margin-bottom: 10px; text-align: left;">
                 {{ form.foto }}
             </div>
-            <button type="submit" style="background: #0284c7; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+            <button type="submit" style="background: #3F5125; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
                 <i class="fa-solid fa-camera"></i> Actualizar Foto
             </button>
         </form>
     </div>
 
     <!-- PREFERENCIAS -->
-    <h4 style="color: var(--azul-uaem); margin-bottom: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Preferencias</h4>
+    <h4 style="color: var(--color-olive); margin-bottom: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Preferencias</h4>
 
     <div class="settings-group">
         <!-- Notificaciones -->
         <div class="settings-item">
-            <div class="settings-icon" style="background: #e0f2fe; color: #0284c7;">
+            <div class="settings-icon" style="background: #F5F3E8; color: #3F5125;">
                 <i class="fa-solid fa-bell"></i>
             </div>
             <div class="settings-text">
@@ -117,7 +117,7 @@
     </div>
 
     <!-- DATOS -->
-    <h4 style="color: var(--azul-uaem); margin: 25px 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Datos</h4>
+    <h4 style="color: var(--color-olive); margin: 25px 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Datos</h4>
 
     <div class="settings-group">
         <form action="{% url 'borrar_historial' %}" method="POST" id="formBorrarHistorial" style="margin: 0;">
@@ -136,7 +136,7 @@
     </div>
 
     <!-- INFORMACIÓN -->
-    <h4 style="color: var(--azul-uaem); margin: 25px 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Información</h4>
+    <h4 style="color: var(--color-olive); margin: 25px 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Información</h4>
 
     <div class="settings-group">
         <a href="{% url 'acerca_de' %}" class="settings-item" style="text-decoration: none;">
@@ -184,7 +184,7 @@
 
     // Confirmación de borrado
     document.getElementById('formBorrarHistorial').addEventListener('submit', function(e) {
-        if (!confirm('¿Estás seguro de que deseas borrar todo tu historial?')) {
+        if (!confirm('Â¿Estás seguro de que deseas borrar todo tu historial?')) {
             e.preventDefault();
         }
     });

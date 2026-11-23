@@ -2,6 +2,10 @@
 /* VARIABLES GLOBALES Y MODO OSCURO           */
 /* ========================================== */
 :root {
+    --color-olive: #556B2F;
+    --color-olive-dark: #3F5125;
+    --color-gold: #D4AF37;
+    --color-ivory: #F5F3E8;
     --bg-body: #f8f9fa;       /* Fondo general claro */
     --bg-card: #ffffff;       /* Fondo de tarjetas y menús */
     --text-main: #333333;     /* Texto principal */
@@ -172,3 +176,317 @@ input, select, textarea {
     z-index: 1;
 }
 
+
+/* ==========================================
+   IDENTIDAD INSTITUCIONAL UAEM-BENCH
+   MARCA DE AGUA Y COLORES
+   ========================================== */
+
+:root {
+    --color-olive: #556B2F;
+    --color-olive-dark: #3F5125;
+    --color-gold: #D4AF37;
+    --color-ivory: #F5F3E8;
+}
+
+/* Marca de agua institucional */
+.uaem-watermark {
+    position: relative;
+    isolation: isolate;
+}
+
+.uaem-watermark::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("../img/uaemex.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: min(75%, 380px) auto;
+    opacity: 0.09;
+}
+
+/* HISTORIAL */
+.history-container .chip.active {
+    background: var(--color-olive) !important;
+    border-color: var(--color-gold) !important;
+}
+
+.history-container .history-card {
+    border-color: rgba(212, 175, 55, 0.35) !important;
+}
+
+.history-container .history-card:hover {
+    border-color: var(--color-gold) !important;
+}
+
+.history-container .history-details h3,
+.history-container .empty-state a {
+    color: var(--color-olive) !important;
+}
+
+.history-container .filter-btn {
+    color: var(--color-olive) !important;
+    border-color: var(--color-gold) !important;
+}
+
+/* ESTADÍSTICAS */
+.stats-container .stat-card {
+    border: 1px solid rgba(212, 175, 55, 0.45) !important;
+}
+
+.stats-container .stat-card h3,
+.stats-container .top-bill-info h2 {
+    color: var(--color-olive) !important;
+}
+
+.stats-container .progress-bar-fill {
+    background: var(--color-gold) !important;
+}
+
+.stats-container .top-bill-icon {
+    background: var(--color-ivory) !important;
+    color: var(--color-olive) !important;
+}
+
+/* CONFIGURACIÓN */
+.uaem-watermark .settings-icon {
+    background: var(--color-ivory) !important;
+    color: var(--color-olive) !important;
+}
+
+.uaem-watermark .settings-group,
+.uaem-watermark .settings-item {
+    border-color: rgba(212, 175, 55, 0.4) !important;
+}
+
+.uaem-watermark h4 {
+    color: var(--color-olive) !important;
+}
+
+.uaem-watermark form[action*="logout"] button {
+    background-color: var(--color-olive) !important;
+    border-bottom: 3px solid var(--color-gold) !important;
+}
+
+/* ACERCA DE */
+.about-page .about-header {
+    background: var(--color-olive) !important;
+    border-bottom: 3px solid var(--color-gold);
+}
+
+.about-page .about-icon {
+    background: var(--color-ivory) !important;
+    border: 2px solid var(--color-gold);
+}
+
+.about-page .about-intro h3,
+.about-page .about-card h5 {
+    color: var(--color-olive) !important;
+}
+
+.about-page .about-card {
+    border-color: rgba(212, 175, 55, 0.5) !important;
+}
+
+/* MODO OSCURO */
+[data-theme="dark"] .uaem-watermark::before {
+    opacity: 0.07;
+}
+
+[data-theme="dark"] .history-container .history-card,
+[data-theme="dark"] .stats-container .stat-card {
+    border-color: rgba(212, 175, 55, 0.4) !important;
+}
+
+
+/* Subtítulos con tipografía normal */
+header p,
+.header-subtitle {
+    font-style: normal !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
+}
+
+
+/* ==========================================
+   UAEMEX - REGISTRO E INICIO DE SESION
+   Identidad institucional verde y oro
+   ========================================== */
+
+:root {
+    --uaem-green: #006341;
+    --uaem-green-dark: #004D33;
+    --uaem-gold: #C5A900;
+    --uaem-ivory: #F5F3E8;
+}
+
+/* Contenedor principal */
+.login-contenedor {
+    background: linear-gradient(145deg, #ffffff, var(--uaem-ivory)) !important;
+    border: 1px solid rgba(0, 99, 65, 0.18) !important;
+    border-top: 4px solid var(--uaem-gold) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 77, 51, 0.10) !important;
+    padding: 24px !important;
+}
+
+/* Formulario */
+.login-contenedor .login-formulario {
+    background: rgba(255, 255, 255, 0.91);
+    border: 1px solid rgba(197, 169, 0, 0.30);
+    border-radius: 15px;
+    padding: 22px;
+    box-shadow: 0 5px 18px rgba(0, 77, 51, 0.06);
+}
+
+/* Etiquetas */
+.login-contenedor .login-formulario label {
+    color: var(--uaem-green-dark) !important;
+    font-weight: 700 !important;
+}
+
+/* Campos de texto */
+.login-contenedor .login-formulario input,
+.login-contenedor .login-formulario select,
+.login-contenedor .login-formulario textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #cbd5ce !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    color: #26352d !important;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Efecto al seleccionar un campo */
+.login-contenedor .login-formulario input:focus,
+.login-contenedor .login-formulario select:focus,
+.login-contenedor .login-formulario textarea:focus {
+    outline: none;
+    border-color: var(--uaem-green) !important;
+    box-shadow: 0 0 0 3px rgba(0, 99, 65, 0.13) !important;
+}
+
+/* Botones */
+.login-contenedor .login-formulario button,
+.login-contenedor .login-formulario input[type="submit"] {
+    background: var(--uaem-green) !important;
+    color: #ffffff !important;
+    border: 2px solid var(--uaem-gold) !important;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+    transition: all 0.25s ease;
+}
+
+/* Efecto al pasar el cursor */
+.login-contenedor .login-formulario button:hover,
+.login-contenedor .login-formulario input[type="submit"]:hover {
+    background: var(--uaem-green-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 77, 51, 0.20);
+}
+
+/* Enlaces */
+.login-contenedor a {
+    color: var(--uaem-green) !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login-contenedor a:hover {
+    color: var(--uaem-green-dark) !important;
+    text-decoration: underline;
+}
+
+/* Mensajes de ayuda */
+.login-contenedor .login-formulario small {
+    color: #59665e !important;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 480px) {
+    .login-contenedor {
+        padding: 15px !important;
+        border-radius: 15px !important;
+    }
+
+    .login-contenedor .login-formulario {
+        padding: 15px;
+    }
+}
+
+/* ==========================================
+   UAEMEX - ACCESO Y REGISTRO
+   Ajustes exclusivos para estas dos pantallas
+   ========================================== */
+
+body:has(.login-contenedor) header.header-azul {
+    background: linear-gradient(135deg, #004D33, #006341) !important;
+    border-bottom: 5px solid #C5A900 !important;
+    color: #ffffff !important;
+    box-shadow: 0 5px 18px rgba(0, 77, 51, 0.20);
+}
+
+body:has(.login-contenedor) header.header-azul .header-title {
+    color: #ffffff !important;
+}
+
+body:has(.login-contenedor) header.header-azul .header-info {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(197, 169, 0, 0.55);
+}
+
+body:has(.login-contenedor) header.header-azul .header-info p {
+    color: #f5e9ad !important;
+}
+
+body:has(.login-contenedor) .main-content {
+    background: #F5F3E8 !important;
+}
+
+body:has(.login-contenedor) .login-contenedor {
+    background: linear-gradient(145deg, #ffffff, #F5F3E8) !important;
+    border: 1px solid rgba(0, 99, 65, 0.25) !important;
+    border-top: 5px solid #C5A900 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 28px rgba(0, 77, 51, 0.12) !important;
+}
+
+body:has(.login-contenedor) .login-contenedor .login-formulario {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid rgba(197, 169, 0, 0.35) !important;
+    border-radius: 15px !important;
+}
+
+body:has(.login-contenedor) .login-contenedor label {
+    color: #004D33 !important;
+}
+
+body:has(.login-contenedor) .login-contenedor input {
+    border: 1px solid #b8c9bf !important;
+    background: #ffffff !important;
+}
+
+body:has(.login-contenedor) .login-contenedor input:focus {
+    border-color: #006341 !important;
+    box-shadow: 0 0 0 3px rgba(0, 99, 65, 0.15) !important;
+}
+
+body:has(.login-contenedor) .login-contenedor button {
+    background: #006341 !important;
+    color: #ffffff !important;
+    border: 2px solid #C5A900 !important;
+}
+
+body:has(.login-contenedor) .login-contenedor button:hover {
+    background: #004D33 !important;
+}
+
+body:has(.login-contenedor) .login-contenedor a {
+    color: #006341 !important;
+}

@@ -57,7 +57,7 @@
 .denomination-box h2 {
     margin: 0;
     font-size: 32px;
-    color: var(--azul-uaem);
+    color: var(--color-olive);
     font-weight: bold;
 }
 
@@ -124,7 +124,7 @@
     width: calc(100% - 30px);
     margin: 0 auto 10px auto;
     padding: 14px;
-    background-color: var(--azul-uaem); /* Azul oscuro */
+    background-color: var(--color-olive); /* Azul oscuro */
     color: white;
     border: none;
     border-radius: 10px;
@@ -147,8 +147,8 @@
     margin: 0 auto 20px auto;
     padding: 14px;
     background-color: transparent;
-    color: var(--azul-uaem);
-    border: 2px solid var(--azul-uaem);
+    color: var(--color-olive);
+    border: 2px solid var(--color-olive);
     border-radius: 10px;
     font-weight: 600;
     font-size: 15px;

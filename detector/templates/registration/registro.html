@@ -4,6 +4,7 @@
 
 {% block content %}
 <div class="fade-in login-contenedor" style="padding: 20px;">    <form method="post" class="login-formulario">
+        {% csrf_token %}
         
         {% for field in form %}
             <div style="margin-bottom: 15px; text-align: left;">
@@ -32,13 +33,13 @@
             </div>
         {% endfor %}
 
-        <button type="submit" style="width: 100%; background-color: #0b3d6b; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px;">
+        <button type="submit" style="width: 100%; background-color: #556B2F; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px;">
             Registrarse
         </button>
     </form>
     
     <div style="text-align: center; margin-top: 20px;">
-        <a href="{% url 'login' %}" style="color: #0b3d6b; text-decoration: none; font-weight: bold;">Ya tengo cuenta, Iniciar Sesión</a>
+        <a href="{% url 'login' %}" style="color: #556B2F; text-decoration: none; font-weight: bold;">Ya tengo cuenta, Iniciar Sesión</a>
     </div>
 </div>
 

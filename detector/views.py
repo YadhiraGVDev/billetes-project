@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.files.base import ContentFile
+from django.db import IntegrityError, transaction
 from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -292,12 +293,35 @@ class RegistroView(generic.CreateView):
     template_name = 'registration/registro.html'
 
     def form_valid(self, form):
-        respuesta = super().form_valid(form)
+        mensaje = (
+            'El nombre de usuario no se encuentra disponible, '
+            'por favor selecciona uno diferente'
+        )
+
+        username = form.cleaned_data.get('username', '')
+        usuario_modelo = form.instance.__class__
+
+        # Primera protección: comprobar si el usuario ya existe
+        if usuario_modelo.objects.filter(username__iexact=username).exists():
+            form.add_error('username', mensaje)
+            return self.form_invalid(form)
+
+        # Segunda protección: manejar conflictos al guardar
+        try:
+            with transaction.atomic():
+                self.object = form.save()
+
+        except IntegrityError:
+            form.add_error('username', mensaje)
+            return self.form_invalid(form)
+
+        # Mantener el inicio de sesión automático
         login(self.request, self.object)
 
+        # Mantener la creación del perfil
         Perfil.objects.create(usuario=self.object)
 
-        return respuesta
+        return redirect(self.get_success_url())
 
 
 # ==========================================
@@ -307,7 +331,7 @@ class RegistroView(generic.CreateView):
 def borrar_historial(request):
     if request.method == 'POST':
         DetectionRecord.objects.all().delete()
-        messages.success(request, 'Â¡Historial borrado con Ã©xito!')
+        messages.success(request, 'Ã‚Â¡Historial borrado con Ã©xito!')
         return redirect('configuracion')
 
 # ==========================================

@@ -1,9 +1,9 @@
-﻿from django.db import models
+from django.db import models
 from django.contrib.auth.models import User
 
 
 # ==========================================
-# MODELO DE DETECCIÃ“N DE BILLETES
+# MODELO DE DETECCIÓN DE BILLETES
 # ==========================================
 class DetectionRecord(models.Model):
     imagen = models.ImageField(upload_to='billetes/')
@@ -42,8 +42,8 @@ class DetectionRecord(models.Model):
     puntaje_calidad = models.FloatField(default=100)
     detalles_calidad = models.JSONField(default=list, blank=True)
 
-    # Si en tu migraciÃ³n anterior renombraste algÃºn campo (como el usuario),
-    # asegÃºrate de mantenerlo aquÃ­. Por ejemplo:
+    # Si en tu migración anterior renombraste algún campo (como el usuario),
+    # asegúrate de mantenerlo aquí. Por ejemplo:
     # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
@@ -51,7 +51,7 @@ class DetectionRecord(models.Model):
 
     def __str__(self):
         return (
-            f"{self.denominacion_detectada or 'Sin denominaciÃ³n'} - "
+            f"{self.denominacion_detectada or 'Sin denominación'} - "
             f"{self.fecha_analisis.strftime('%Y-%m-%d %H:%M')}"
         )
 
@@ -70,7 +70,7 @@ class DetectionRecord(models.Model):
 
     @property
     def apto(self):
-        """True si el billete no estÃ¡ roto, doblado ni arrugado."""
+        """True si el billete no está roto, doblado ni arrugado."""
         return not (self.roto or self.doblado or self.arrugado)
 
 
