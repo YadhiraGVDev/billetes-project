@@ -1,16 +1,17 @@
-﻿{% load static %}
+﻿
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UAEM-bench</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'detector/css/style.css' %}">
-    
-    <!-- VARIABLES GLOBALES PARA EL TEMA -->
+
     <style>
-        /* TEMA CLARO (Por defecto) */
+        /* TEMA CLARO */
         :root {
             --bg-body: #eef2f5;
             --bg-app: #f8f9fa;
@@ -30,31 +31,127 @@
             --border-color: #333333;
         }
 
-        /* Transiciones suaves */
+        /* TRANSICIONES */
         body, .app-container, main, nav, .header-info {
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        /* ENCABEZADO */
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header-logos {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .header-logos img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+        }
+
+        .header-title {
+            margin: 0 0 20px 0;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* ==================================
+           MARCA DE AGUA UAEMÉX
+        ================================== */
+
+        .main-content {
+            position: relative;
+            isolation: isolate;
+            background: var(--bg-app);
+        }
+
+        .main-content::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+
+            background-image: url("{% static 'detector/img/uaemex.png' %}");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 65% auto;
+
+            opacity: 0.09;
+        }
+
+        /* Mantener el contenido delante de la marca de agua */
+        .main-content-inner {
+            position: relative;
+            z-index: 1;
+            min-height: 100%;
+        }
+
+        /* AJUSTE PARA PANTALLAS PEQUEÑAS */
+        @media (max-width: 350px) {
+            .header-logos {
+                gap: 8px;
+            }
+
+            .header-logos img {
+                width: 45px;
+                height: 45px;
+            }
+        }
     </style>
+
     {% block extra_css %}{% endblock %}
 </head>
-<!-- Usamos las variables en el body y el contenedor principal -->
+
 <body style="margin: 0; padding: 0; background: var(--bg-body); display: flex; justify-content: center;">
 
-    <!-- CONTENEDOR DE APP MÓVIL -->
+    <!-- CONTENEDOR PRINCIPAL -->
     <div class="app-container" style="position: relative; width: 100%; max-width: 480px; height: 100vh; background: var(--bg-app); display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); overflow: hidden;">
-        
-        <!-- ENCABEZADO DINÁMICO -->
+
+        <!-- ENCABEZADO -->
         <header class="header-azul" style="background: #0b3d6b; padding: 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; color: white; padding-bottom: 30px; flex-shrink: 0;">
-            <div class="header-top" style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                <button class="btn-back" onclick="history.back()" style="background: transparent; border: none; color: white; font-size: 20px; cursor: pointer;">
+
+            <!-- LOGOTIPOS -->
+            <div class="header-top">
+
+                <button class="btn-back" onclick="history.back()" aria-label="Regresar" style="background: transparent; border: none; color: white; font-size: 20px; cursor: pointer;">
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
-                <h2 style="margin: 0; font-size: 20px; font-weight: bold;">UAEM-bench</h2>
+
+                <div class="header-logos">
+
+                    <img
+                        src="{% static 'detector/img/logo.png' %}"
+                        alt="Logotipo UAEM-bench">
+
+                    <img
+                        src="{% static 'detector/img/uaemex.png' %}"
+                        alt="Escudo UAEMéx">
+
+                </div>
+
+                <div style="width: 20px;"></div>
             </div>
 
+            <!-- NOMBRE DEL PROYECTO -->
+            <h2 class="header-title">
+                UAEM-bench
+            </h2>
+
+            <!-- INFORMACIÓN DEL USUARIO -->
             <div class="header-info" style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px;">
-                
-                <!-- FOTO DE PERFIL -->
+
                 {% if perfil and perfil.foto %}
                     <img src="{{ perfil.foto.url }}" alt="Perfil" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #4da6ff;">
                 {% else %}
@@ -64,59 +161,80 @@
                 {% endif %}
 
                 <div>
-                    <h3 style="margin: 0; font-size: 16px;">{% block header_title %}Detecta, identifica y analiza{% endblock %}</h3>
-                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #a0c4e8;">{% block header_subtitle %}billetes mexicanos con inteligencia artificial{% endblock %}</p>
+                    <h3 style="margin: 0; font-size: 16px;">
+                        {% block header_title %}Detecta, identifica y analiza{% endblock %}
+                    </h3>
+
+                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #a0c4e8;">
+                        {% block header_subtitle %}billetes mexicanos con inteligencia artificial{% endblock %}
+                    </p>
                 </div>
             </div>
         </header>
 
-        <!-- CONTENIDO PRINCIPAL -->
+        <!-- CONTENIDO PRINCIPAL CON MARCA DE AGUA -->
         <main class="main-content" style="flex: 1; padding: 20px; padding-bottom: 80px; overflow-y: auto; color: var(--text-main);">
-            {% block content %}
-            {% endblock %}
+
+            <div class="main-content-inner">
+
+                {% block content %}
+                {% endblock %}
+
+            </div>
+
         </main>
 
         <!-- BARRA INFERIOR -->
         {% block bottom_nav %}
         <nav style="width: 100%; background: var(--bg-card); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid var(--border-color); flex-shrink: 0;">
+
             <a href="{% url 'home' %}" style="text-decoration: none; color: var(--text-muted); text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
                 <i class="fa-solid fa-house" style="font-size: 20px; margin-bottom: 3px;"></i>
                 <span>Inicio</span>
             </a>
+
             <a href="{% url 'historial' %}" style="text-decoration: none; color: var(--text-muted); text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
                 <i class="fa-solid fa-clock" style="font-size: 20px; margin-bottom: 3px;"></i>
                 <span>Historial</span>
             </a>
+
             <a href="{% url 'estadisticas' %}" style="text-decoration: none; color: var(--text-muted); text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
                 <i class="fa-solid fa-chart-simple" style="font-size: 20px; margin-bottom: 3px;"></i>
                 <span>Estadísticas</span>
             </a>
+
             <a href="{% url 'configuracion' %}" style="text-decoration: none; color: var(--text-muted); text-align: center; font-size: 11px; display: flex; flex-direction: column; align-items: center;">
                 <i class="fa-solid fa-gear" style="font-size: 20px; margin-bottom: 3px;"></i>
                 <span>Más</span>
             </a>
+
         </nav>
         {% endblock %}
 
     </div>
 
+    <!-- JAVASCRIPT PRINCIPAL -->
     <script src="{% static 'detector/js/main.js' %}"></script>
-    
-    <!-- SCRIPT GLOBAL PARA CARGAR EL TEMA -->
+
+    <!-- CARGAR TEMA -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
             const savedTheme = localStorage.getItem('theme') || 'light';
+
             document.documentElement.setAttribute('data-theme', savedTheme);
-            
-            // Si el selector está en la página actual, actualiza su valor
+
             const selector = document.getElementById('themeSelector');
+
             if (selector) {
                 selector.value = savedTheme;
             }
+
         });
     </script>
-    
+
     {% block extra_js %}
     {% endblock %}
+
 </body>
 </html>

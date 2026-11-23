@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -19,51 +20,33 @@
 
 {% block content %}
 
-<!-- Grid de Tarjetas -->
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+<style>
+   
+.inicio-contenido {
+    position: relative;
+    isolation: isolate;
+    min-height: 420px;
+    padding: 5px;
+}
 
-    <!-- Tarjeta 1 -->
-    <a href="{% url 'upload' %}" style="background: var(--bg-card); padding: 20px 10px; border-radius: 15px; text-align: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <i class="fa-solid fa-camera" style="color: #0d6efd; font-size: 30px; margin-bottom: 10px;"></i>
-        <h3 style="margin: 5px 0; font-size: 15px; color: var(--text-main);">Detectar billete</h3>
-        <p style="margin: 0; font-size: 11px; color: var(--text-muted);">Sube una foto e inicia el análisis</p>
-    </a>
+.inicio-contenido::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
 
-    <!-- Tarjeta 2 -->
-    <a href="{% url 'historial' %}" style="background: var(--bg-card); padding: 20px 10px; border-radius: 15px; text-align: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <i class="fa-solid fa-clock-rotate-left" style="color: #198754; font-size: 30px; margin-bottom: 10px;"></i>
-        <h3 style="margin: 5px 0; font-size: 15px; color: var(--text-main);">Consultar historial</h3>
-        <p style="margin: 0; font-size: 11px; color: var(--text-muted);">Revisa detecciones anteriores</p>
-    </a>
+    background-image: url("{% static 'detector/img/uaemex.png' %}");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 85% auto;
 
-    <!-- Tarjeta 3 -->
-    <a href="{% url 'estadisticas' %}" style="background: var(--bg-card); padding: 20px 10px; border-radius: 15px; text-align: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <i class="fa-solid fa-chart-column" style="color: #f59e0b; font-size: 30px; margin-bottom: 10px;"></i>
-        <h3 style="margin: 5px 0; font-size: 15px; color: var(--text-main);">Estadísticas</h3>
-        <p style="margin: 0; font-size: 11px; color: var(--text-muted);">Consulta el resumen de análisis</p>
-    </a>
+opacity: 0.50;
+}
 
-    <!-- Tarjeta 4 -->
-    <a href="{% url 'instrucciones' %}" style="background: var(--bg-card); padding: 20px 10px; border-radius: 15px; text-align: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <i class="fa-solid fa-book-open" style="color: #0dcaf0; font-size: 30px; margin-bottom: 10px;"></i>
-        <h3 style="margin: 5px 0; font-size: 15px; color: var(--text-main);">Instrucciones</h3>
-        <p style="margin: 0; font-size: 11px; color: var(--text-muted);">Guía de uso</p>
-    </a>
+.inicio-contenido .tarjetas-inicio,
+.inicio-contenido .botones-acceso {
+    position: relative;
+    z-index: 1;
+}
 
-</div>
-
-{% if not user.is_authenticated %}
-<!-- BOTONES SOLO SI NO HA INICIADO SESIÓN -->
-<div style="margin-top: 20px; text-align: center;">
-    <div style="display: flex; gap: 10px; justify-content: center;">
-        <a href="{% url 'login' %}" style="background: #0b3d6b; color: white; text-decoration: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; width: 100%; max-width: 140px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            Iniciar Sesión
-        </a>
-        <a href="{% url 'registro' %}" style="background: #198754; color: white; text-decoration: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; width: 100%; max-width: 140px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            Registrarse
-        </a>
-    </div>
-</div>
-{% endif %}
-
-{% endblock %}

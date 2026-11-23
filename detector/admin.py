@@ -85,7 +85,7 @@ class DetectionRecordAdmin(admin.ModelAdmin):
         else:
             color = '#dc3545'  # rojo
         return format_html(
-            '<b style="color:{};">{:.0f}/100</b>', color, p
+            '<b style="color:{};">{}/100</b>', color, f"{p:.0f}"
         )
 
     @admin.display(description='Vista previa')

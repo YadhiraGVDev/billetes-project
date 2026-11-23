@@ -25,11 +25,11 @@ from detector.services.calidad import AnalizadorCalidadBillete
 
 logger = logging.getLogger(__name__)
 
-# Extensiones permitidas y tamaño máximo (10 MB)
+# Extensiones permitidas y tamaÃ±o mÃ¡ximo (10 MB)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10 MB
 
-# Instancia única del analizador (se reutiliza en cada request)
+# Instancia Ãºnica del analizador (se reutiliza en cada request)
 analizador_calidad = AnalizadorCalidadBillete()
 
 
@@ -41,7 +41,7 @@ def splash_screen(request):
 
 
 # ==========================================
-# 2. MENÚ PRINCIPAL (Enviamos el perfil)
+# 2. MENÃš PRINCIPAL (Enviamos el perfil)
 # ==========================================
 def menu(request):
     perfil = getattr(request.user, 'perfil', None) if request.user.is_authenticated else None
@@ -49,7 +49,7 @@ def menu(request):
 
 
 # ==========================================
-# 3. DETECCIÓN (Cámara) - SIN PERFIL (Para que salga el robot)
+# 3. DETECCIÃ“N (CÃ¡mara) - SIN PERFIL (Para que salga el robot)
 # ==========================================
 @require_http_methods(["GET", "POST"])
 def upload_and_detect(request):
@@ -60,34 +60,34 @@ def upload_and_detect(request):
     try:
         data = json.loads(request.body)
     except json.JSONDecodeError:
-        return JsonResponse({'error': 'JSON inválido'}, status=400)
+        return JsonResponse({'error': 'JSON invÃ¡lido'}, status=400)
 
     image_base64 = data.get('image')
     if not image_base64 or not isinstance(image_base64, str):
-        return JsonResponse({'error': 'No se recibió imagen'}, status=400)
+        return JsonResponse({'error': 'No se recibiÃ³ imagen'}, status=400)
 
-    # --- Validación del formato data URI ---
+    # --- ValidaciÃ³n del formato data URI ---
     try:
         format_part, imgstr = image_base64.split(';base64,', 1)
         ext = format_part.split('/')[-1].lower()
     except ValueError:
-        return JsonResponse({'error': 'Formato de imagen inválido'}, status=400)
+        return JsonResponse({'error': 'Formato de imagen invÃ¡lido'}, status=400)
 
     if ext not in ALLOWED_EXTENSIONS:
         return JsonResponse(
-            {'error': f'Extensión no permitida: {ext}'}, status=400
+            {'error': f'ExtensiÃ³n no permitida: {ext}'}, status=400
         )
 
-    # --- Decodificación segura ---
+    # --- DecodificaciÃ³n segura ---
     try:
         decoded = base64.b64decode(imgstr, validate=True)
     except (base64.binascii.Error, ValueError):
-        return JsonResponse({'error': 'Base64 inválido'}, status=400)
+        return JsonResponse({'error': 'Base64 invÃ¡lido'}, status=400)
 
     if len(decoded) > MAX_IMAGE_SIZE:
         return JsonResponse({'error': 'Imagen demasiado grande'}, status=413)
 
-    # --- Análisis de CALIDAD ---
+    # --- AnÃ¡lisis de CALIDAD ---
     try:
         calidad = analizador_calidad.analizar_desde_bytes(decoded)
     except Exception:
@@ -97,7 +97,7 @@ def upload_and_detect(request):
             "arrugado": False,
             "roto": False,
             "puntaje_calidad": 100,
-            "detalles": ["Análisis de calidad no disponible"],
+            "detalles": ["AnÃ¡lisis de calidad no disponible"],
         }
 
     # --- Guardar Registro ---
@@ -111,13 +111,17 @@ def upload_and_detect(request):
     record.detalles_calidad = calidad["detalles"]
     record.save()
 
+    # Liberar referencias temporales de la imagen
+    image_file.close()
+    del image_file
+    del decoded
     # ==========================================
-    # PREDICCIÓN (Lógica Local y Producción)
+    # PREDICCIÃ“N (LÃ³gica Local y ProducciÃ³n)
     # ==========================================
     try:
-        # Si estamos en producción, la URL será de Cloudinary (http)
+        # Si estamos en producciÃ³n, la URL serÃ¡ de Cloudinary (http)
         if hasattr(record.imagen, 'url') and record.imagen.url.startswith('http'):
-            # --- MODO PRODUCCIÓN (Cloudinary) ---
+            # --- MODO PRODUCCIÃ“N (Cloudinary) ---
             with tempfile.NamedTemporaryFile(delete=False, suffix=f".{ext}") as temp_file:
                 urllib.request.urlretrieve(record.imagen.url, temp_file.name)
                 temp_path = temp_file.name
@@ -127,7 +131,7 @@ def upload_and_detect(request):
 
         else:
             # --- MODO LOCAL (Disco duro de tu PC) ---
-            # Usamos la ruta directa del archivo que ya se guardó
+            # Usamos la ruta directa del archivo que ya se guardÃ³
             texto_ia, confianza = predict_bill(record.imagen.path)
 
     except Exception as e:
@@ -157,8 +161,33 @@ def upload_and_detect(request):
 def mostrar_resultado(request, record_id):
     perfil = getattr(request.user, 'perfil', None) if request.user.is_authenticated else None
     registro = get_object_or_404(DetectionRecord, id=record_id)
-    return render(request, 'detector/result.html', {'registro': registro, 'perfil': perfil})
 
+    if request.method == 'POST':
+        denominacion_real = request.POST.get('denominacion_real', '')
+        generacion_billete = request.POST.get('generacion_billete', '')
+
+        denominaciones_validas = {'20', '50', '100', '200', '500'}
+        generaciones_validas = {'anterior', 'actual'}
+
+        if denominacion_real not in denominaciones_validas:
+            messages.error(request, 'Selecciona una denominacion valida.')
+        elif generacion_billete not in generaciones_validas:
+            messages.error(request, 'Selecciona la generacion del billete.')
+        else:
+            registro.denominacion_real = denominacion_real
+            registro.generacion_billete = generacion_billete
+            registro.save(update_fields=[
+                'denominacion_real',
+                'generacion_billete'
+            ])
+            messages.success(request, 'Confirmacion guardada correctamente.')
+
+        return redirect('resultado', record_id=registro.id)
+
+    return render(request, 'detector/result.html', {
+        'registro': registro,
+        'perfil': perfil
+    })
 
 # ==========================================
 # 5. OTRAS PANTALLAS
@@ -278,7 +307,7 @@ class RegistroView(generic.CreateView):
 def borrar_historial(request):
     if request.method == 'POST':
         DetectionRecord.objects.all().delete()
-        messages.success(request, '¡Historial borrado con éxito!')
+        messages.success(request, 'Â¡Historial borrado con Ã©xito!')
         return redirect('configuracion')
 
 # ==========================================
@@ -292,5 +321,6 @@ def detalles_billete(request, record_id):
         'registro': registro, 
         'perfil': perfil
     })
+
 
 

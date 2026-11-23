@@ -3,9 +3,7 @@
 {% block header_subtitle %}Regístrate para guardar tu historial{% endblock %}
 
 {% block content %}
-<div class="fade-in" style="padding: 20px;">
-    <form method="post">
-        {% csrf_token %}
+<div class="fade-in login-contenedor" style="padding: 20px;">    <form method="post" class="login-formulario">
         
         {% for field in form %}
             <div style="margin-bottom: 15px; text-align: left;">

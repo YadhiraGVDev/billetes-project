@@ -137,3 +137,38 @@ input, select, textarea {
     border: 1px solid var(--border-color) !important;
     color: var(--text-main) !important;
 }
+
+
+/* ========================================== */
+/* LOGIN - MARCA DE AGUA UAEMÉX               */
+/* ========================================== */
+
+.login-contenedor {
+    position: relative;
+    isolation: isolate;
+    min-height: 430px;
+    overflow: hidden;
+}
+
+/* Escudo institucional */
+.login-contenedor::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background-image: url("../img/uaemex.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 85% auto;
+
+    opacity: 0.10;
+}
+
+/* Formulario por encima del escudo */
+.login-contenedor .login-formulario {
+    position: relative;
+    z-index: 1;
+}
+
